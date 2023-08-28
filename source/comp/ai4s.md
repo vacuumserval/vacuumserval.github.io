@@ -34,12 +34,14 @@ $$
 E(\mathbf{\mathcal{R}})\approx \mathfrak{f}\left(\mathbf{\mathcal{R}}\right)
 $$
 
-在最一般的三维$N$原子情形下，$\mathbf{\mathcal{R}}$的维度是$3N$，$3N$个原子体系的量子力学效应会使$f$的拟合非常困难，是为"维度灾难(Curse of dimensionality)"。最近，机器学习(machine-learning, ML)的迅速发展，特别是深度神经网络(deep neural network, DNN)在拟合领域的广泛使用，为MD势的建模提供了一个新方向——在ML的视角下，$\mathfrak{f}$并不是一个确定的函数，而是一个DNN的"黑箱"，这个黑箱的输入是描述原子构型的参数$\mathcal{D}\left(\mathbf{\mathcal{R}}\right)$，称之为"描述子(descriptor)"，输出是其对应的势能，我们只要用ML的方法，训练这个DNN就可以了。在众多类似工作中，由王涵、张林峰、鄂维南等首创的"深度势能(deep potential MD, DeePMD/DPMD/DP)"方法[^1]<sup>,</sup>[^2]是本课题组重点学习的方法，hal9000服务器已经被配置了DP方法的基本模块"deepmd-kit"：
+在最一般的三维$N$原子情形下，$\mathbf{\mathcal{R}}$的维度是$3N$，$3N$个原子体系的量子力学效应会使$f$的拟合非常困难，是为"维度灾难(Curse of dimensionality)"。最近，机器学习(machine-learning, ML)的迅速发展，特别是深度神经网络(deep neural network, DNN)在拟合领域的广泛使用，为MD势的建模提供了一个新方向——在ML的视角下，$\mathfrak{f}$并不是一个确定的函数，而是一个DNN的"黑箱"，这个黑箱的输入是描述原子构型的参数$\mathcal{D}\left(\mathbf{\mathcal{R}}\right)$，称之为"描述子(descriptor)"，输出是其对应的势能，我们只要用ML的方法，训练这个DNN就可以了。在众多类似工作中，由王涵、张林峰、鄂维南等首创的"深度势能(deep potential MD, DeePMD/DPMD/DP)"方法[^1]<sup>,</sup>[^2]是本课题组重点学习的方法，hal9000服务器已经被配置了DP方法的基本模块"deepmd-kit"（已经完成，请不必重新配置）：
 
 ```
 conda create -n deepmd -c https://conda.deepmodeling.com -c defaults
 conda activate deepmd
-conda install deepmd-kit=*=*gpu libdeepmd=*=*gpu lammps cudatoolkit=11.6 horovod dpdata -c https://conda.deepmodeling.com -c defaults
+conda install deepmd-kit=*=*gpu libdeepmd=*=*gpu lammps cudatoolkit=11.6 horovod -c https://conda.deepmodeling.com -c defaults
+pip install dpdata
+pip install dpgen
 sudo chgrp -R microTi deepmd/
 sudo chmod 770 -R deepmd/
 sudo chmod g+s deepmd
@@ -54,7 +56,7 @@ conda activate deepmd
 
 ### 5分钟教程
 
-DeePMD手册上有一个[5分钟教程](https://tutorials.deepmodeling.com/en/latest/Tutorials/DeePMD-kit/learnDoc/run5minutes.html#)，以[这组数据](https://dp-public.oss-cn-beijing.aliyuncs.com/community/DeePMD-kit-FastLearn.tar)为例子，说明了DeePMD的基本使用方法：*Prepare data –> Training –> Freeze/Compress the model*。
+DeePMD手册上有一个[5分钟教程](https://tutorials.deepmodeling.com/en/latest/Tutorials/DeePMD-kit/learnDoc/run5minutes.html#)，以[这组数据](https://dp-public.oss-cn-beijing.aliyuncs.com/community/DeePMD-kit-FastLearn.tar)为样例，说明了DeePMD的基本使用方法：*Prepare data –> Training –> Freeze/Compress the model*。
 
 #### Prepare data 准备数据
 
@@ -177,10 +179,46 @@ dp freeze -o graph.pb
 dp compress -i graph.pb -o graph-compress.pb
 ```
 
-压缩的模型`graph-compress.pb`，采用了“DP-specific compression”算法[^3]， 在MD仿真中会未压缩的`graph.pb`要快。
+压缩的模型`graph-compress.pb`，采用了“DP-specific compression”算法[^3]， 在MD仿真中，计算速度会比未压缩的`graph.pb`的要快。
 
 [^1]: Han Wang, Linfeng Zhang, Jiequn Han, and Weinan E. “DeePMD-kit: A deep learning package for many-body potential energy representation and molecular dynamics.” Computer Physics Communications 228 (2018): 178-184.
 
 [^2]: Jinzhe Zeng, Duo Zhang, Denghui Lu, Pinghui Mo, Zeyu Li, Yixiao Chen, Marián Rynik, Li’ang Huang, Ziyao Li, Shaochen Shi, Yingze Wang, Haotian Ye, Ping Tuo, Jiabin Yang, Ye Ding, Yifan Li, Davide Tisi, Qiyu Zeng, Han Bao, Yu Xia, Jiameng Huang, Koki Muraoka, Yibo Wang, Junhan Chang, Fengbo Yuan, Sigbjørn Løland Bore, Chun Cai, Yinnian Lin, Bo Wang, Jiayan Xu, Jia-Xin Zhu, Chenxing Luo, Yuzhi Zhang, Rhys E. A. Goodall, Wenshuo Liang, Anurag Kumar Singh, Sikai Yao, Jingchao Zhang, Renata Wentzcovitch, Jiequn Han, Jie Liu, Weile Jia, Darrin M. York, Weinan E, Roberto Car, Linfeng Zhang, Han Wang. “DeePMD-kit v2: A software package for Deep Potential models.” J. Chem. Phys., 159, 054801 (2023).
 
 [^3]: Lu, Denghui, Wanrun Jiang, Yixiao Chen, Linfeng Zhang, Weile Jia, Han Wang, and Mohan Chen. "DP compress: A model compression scheme for generating efficient deep potential models." Journal of chemical theory and computation 18, no. 9 (2022): 5559-5567.
+
+## DP-GEN
+
+在实际使用时，DP势生成器(DeeP Potential GENerator, DP-GEN)是一个更常用的、用于生成可靠的DP势模型的软件。DeePMD手册的[DP-GEN教程(在2023年8月28日是v0.10.6)](https://tutorials.deepmodeling.com/en/latest/Tutorials/DP-GEN/learnDoc/DP-GEN_handson.html#)描述了其基本使用，[教程的中文版(在2023年8月28日是v0.10.3)](https://tutorials.deepmodeling.com/zh_CN/devel/Tutorials/DP-GEN/learnDoc/DP-GEN_handson.html)有些落后且翻译的不全。故在此翻译并学习前者。
+
+### DP-GEN的工作流
+
+一般来讲，DP-GEN的工作流包含三个步骤：*init –> run –> autotest*。
+
+* init: 通过第一性原理计算方法生成**初始训练集**
+
+* run: 是DP-GEN的主要步骤，在此步骤中，训练集会被**扩充增强**，DP模型的质量会被**自动提升**
+
+* autotest: 计算一系列的简单性质，和/或执行仿真，以和DFT的结果和/或经验势的结果**比较**
+
+### 样例：气相甲烷(methane, CH4)分子
+
+这个例子介绍了DP-GEN的基本使用，以气相甲烷(CH4)分子为例。
+
+#### init
+
+初始集被用于训练一些（默认为4）个初始DP模型，这可以通过定制化(custom)的方法或者标准化(standard)的方法生成。
+
+**定制化方法**
+
+进行AIMD仿真，是通过定制化方法生成初始集的典型方式，DP-GEN给予了一些建议:
+
+* 在**高温**下进行AIMD
+
+* 尽可能在**不相关**的各种构型开始AIMD
+
+* 间隔**足够长的时间**保存AIMD的构型（以使构型尽量不相关）
+
+
+
+

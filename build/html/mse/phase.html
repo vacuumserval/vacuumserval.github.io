@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Critical Opalescence &amp; Critical Point &mdash; Spherical Serval in a Vacuum</title>
+  <title>Phase Equilibria &amp; Phase Diagram &mdash; Spherical Serval in a Vacuum</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -52,7 +52,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../comp.html">Computational Materials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../mse.html">Materials Science &amp; Engineering</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dislocation.html">Dislocation &amp; Defects</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Critical Opalescence &amp; Critical Point</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Phase Equilibria &amp; Phase Diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#critical-opalescence-critical-point">Critical Opalescence &amp; Critical Point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phonopy-vasp">Phonopy+VASP的声子谱计算</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">生成和弛豫晶格</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">扩充晶胞并进行静态计算</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hellmannfeynman">提取原子受到的Hellmann−Feynman力</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">计算声子谱</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="alloy.html">Titanium Alloys</a></li>
 </ul>
 </li>
@@ -76,7 +86,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../mse.html">Materials Science &amp; Engineering</a></li>
-      <li class="breadcrumb-item active">Critical Opalescence &amp; Critical Point</li>
+      <li class="breadcrumb-item active">Phase Equilibria &amp; Phase Diagram</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/mse/phase.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -97,13 +107,14 @@
         });
     </script>
 </head>
-# Phase Equilibria & Phase Diagram
+<section id="phase-equilibria-phase-diagram">
+<h1>Phase Equilibria &amp; Phase Diagram<a class="headerlink" href="#phase-equilibria-phase-diagram" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><p>边缘奇迹：相变和临界现象， 于渌 郝柏林 陈晓松， 190页</p></li>
 <li><p>Phase Equilibria, Phase Diagrams and Phase Transformations: Their Thermodynamic Bases (2nd Edition), M. Hillert, 510页</p></li>
 </ul>
 <section id="critical-opalescence-critical-point">
-<h1>Critical Opalescence &amp; Critical Point<a class="headerlink" href="#critical-opalescence-critical-point" title="Permalink to this heading"></a></h1>
+<h2>Critical Opalescence &amp; Critical Point<a class="headerlink" href="#critical-opalescence-critical-point" title="Permalink to this heading"></a></h2>
 <p><strong>Critical opalescence</strong> is a phenomenon which arise in the region of a continuous (2nd order) phase transition. This phenomenon is related to the correlation length near the critical point.</p>
 <p><img alt="Left-to-right sequence of heating a mass of ethane in a constant volume. In the center panel, critical opalescence is seen." src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/CriticalPointMeasurementEthane.jpg/320px-CriticalPointMeasurementEthane.jpg" /></p>
 <p><strong>Critical length</strong> $C(\mathbf{r})$ is defined by the characteristic length scale at which the overall properties $S(\mathbf{r})$ of the pieces begins to differ markedly from those $S(\mathbf{0})$ of the origin:</p>
@@ -112,6 +123,140 @@ C(\mathbf{r})=\langle S(\mathbf{r})S(0))\rangle-\langle S(\mathbf{r})\rangle\lan
 $$</p>
 <p>The correlation length at 1st order transition is generally finite, however, in the 2nd order transition, the correlation length becomes effectively infinite. Fluctuations become correlated over all distances, which forces the whole system to be in a unique, critical, phase.</p>
 <p>The divergence of the correlation length in the vicinity of a second order phase transition suggests that properties near the critical point can be accurately described within <strong>an effective theory involving only long-range collective fluctuations</strong> of the system. This invites the construction of a phenomenological Hamiltonian or Free energy which is constrained only by the fundamental symmetries of the system. Such a description goes under the name of <em>Ginzburg-Landau theory</em>.</p>
+</section>
+<section id="phonopy-vasp">
+<h2>Phonopy+VASP的声子谱计算<a class="headerlink" href="#phonopy-vasp" title="Permalink to this heading"></a></h2>
+<p>基于文献<a class="footnote-reference brackets" href="#id5" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>，以$\alpha$-Ti的有限位移(finite displacement, FD)法为例。</p>
+<section id="id2">
+<h3>生成和弛豫晶格<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">icme</span>
+<span class="n">atomsk</span> <span class="o">--</span><span class="n">create</span> <span class="n">hcp</span> <span class="mf">2.95</span> <span class="mf">4.68</span> <span class="n">Ti</span> <span class="n">POSCAR</span>
+<span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">101</span> <span class="n">LR</span>
+</pre></div>
+</div>
+<p>默认的INCAR的收敛判据不够准确，应修改(主要是<code class="docutils literal notranslate"><span class="pre">ENCUT</span></code>, <code class="docutils literal notranslate"><span class="pre">NSW</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFF</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFFG</span></code>等参数；而<code class="docutils literal notranslate"><span class="pre">IBRION</span></code>初始时可设置为1，能量稳定下降后设置为2。)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">Parameters</span>
+<span class="n">ISTART</span> <span class="o">=</span>  <span class="mi">1</span>            <span class="p">(</span><span class="n">Read</span> <span class="n">existing</span> <span class="n">wavefunction</span><span class="p">,</span> <span class="k">if</span> <span class="n">there</span><span class="p">)</span>
+<span class="n">ISPIN</span>  <span class="o">=</span>  <span class="mi">1</span>            <span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Spin</span> <span class="n">polarised</span> <span class="n">DFT</span><span class="p">)</span>
+<span class="c1"># ICHARG =  11         (Non-self-consistent: GGA/LDA band structures)</span>
+<span class="n">LREAL</span>  <span class="o">=</span> <span class="o">.</span><span class="n">FALSE</span><span class="o">.</span>       <span class="p">(</span><span class="n">Projection</span> <span class="n">operators</span><span class="p">:</span> <span class="n">automatic</span><span class="p">)</span>
+<span class="n">ENCUT</span>  <span class="o">=</span>  <span class="mi">400</span>          <span class="p">(</span><span class="n">Cut</span><span class="o">-</span><span class="n">off</span> <span class="n">energy</span> <span class="k">for</span> <span class="n">plane</span> <span class="n">wave</span> <span class="n">basis</span> <span class="nb">set</span><span class="p">,</span> <span class="ow">in</span> <span class="n">eV</span><span class="p">)</span>
+<span class="c1"># PREC   =  Accurate   (Precision level: Normal or Accurate, set Accurate when perform structure lattice relaxation calculation)</span>
+<span class="n">LWAVE</span>  <span class="o">=</span> <span class="o">.</span><span class="n">TRUE</span><span class="o">.</span>        <span class="p">(</span><span class="n">Write</span> <span class="n">WAVECAR</span> <span class="ow">or</span> <span class="ow">not</span><span class="p">)</span>
+<span class="n">LCHARG</span> <span class="o">=</span> <span class="o">.</span><span class="n">TRUE</span><span class="o">.</span>        <span class="p">(</span><span class="n">Write</span> <span class="n">CHGCAR</span> <span class="ow">or</span> <span class="ow">not</span><span class="p">)</span>
+<span class="n">ADDGRID</span><span class="o">=</span> <span class="o">.</span><span class="n">TRUE</span><span class="o">.</span>        <span class="p">(</span><span class="n">Increase</span> <span class="n">grid</span><span class="p">,</span> <span class="n">helps</span> <span class="n">GGA</span> <span class="n">convergence</span><span class="p">)</span>
+<span class="c1"># LVTOT  = .TRUE.      (Write total electrostatic potential into LOCPOT or not)</span>
+<span class="c1"># LVHAR  = .TRUE.      (Write ionic + Hartree electrostatic potential into LOCPOT or not)</span>
+<span class="c1"># NELECT =             (No. of electrons: charged cells, be careful)</span>
+<span class="c1"># LPLANE = .TRUE.      (Real space distribution, supercells)</span>
+<span class="c1"># NWRITE = 2           (Medium-level output)</span>
+<span class="c1"># KPAR   = 2           (Divides k-grid into separate groups)</span>
+<span class="c1"># NGXF    = 300        (FFT grid mesh density for nice charge/potential plots)</span>
+<span class="c1"># NGYF    = 300        (FFT grid mesh density for nice charge/potential plots)</span>
+<span class="c1"># NGZF    = 300        (FFT grid mesh density for nice charge/potential plots)</span>
+ 
+<span class="n">Lattice</span> <span class="n">Relaxation</span>
+<span class="n">NSW</span>    <span class="o">=</span>  <span class="mi">500</span>          <span class="p">(</span><span class="n">number</span> <span class="n">of</span> <span class="n">ionic</span> <span class="n">steps</span><span class="p">)</span>
+<span class="n">ISMEAR</span> <span class="o">=</span>  <span class="mi">0</span>            <span class="p">(</span><span class="n">gaussian</span> <span class="n">smearing</span> <span class="n">method</span> <span class="p">)</span>
+<span class="n">SIGMA</span>  <span class="o">=</span>  <span class="mf">0.05</span>         <span class="p">(</span><span class="n">please</span> <span class="n">check</span> <span class="n">the</span> <span class="n">width</span> <span class="n">of</span> <span class="n">the</span> <span class="n">smearing</span><span class="p">)</span>
+<span class="n">IBRION</span> <span class="o">=</span>  <span class="mi">2</span>            <span class="p">(</span><span class="n">Algorithm</span><span class="p">:</span> <span class="mi">0</span><span class="o">-</span><span class="n">MD</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">Quasi</span><span class="o">-</span><span class="n">New</span><span class="p">,</span> <span class="mi">2</span><span class="o">-</span><span class="n">CG</span><span class="p">)</span>
+<span class="n">ISIF</span>   <span class="o">=</span>  <span class="mi">3</span>            <span class="p">(</span><span class="n">optimize</span> <span class="n">atomic</span> <span class="n">coordinates</span> <span class="ow">and</span> <span class="n">lattice</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">EDIFF</span>  <span class="o">=</span>  <span class="mf">1.0E-7</span>      
+<span class="n">EDIFFG</span> <span class="o">=</span>  <span class="mf">1.0E-6</span>       <span class="p">(</span><span class="n">Ionic</span> <span class="n">convergence</span><span class="p">,</span> <span class="n">eV</span><span class="o">/</span><span class="n">A</span><span class="p">)</span>
+<span class="n">PREC</span>   <span class="o">=</span>  <span class="n">Accurate</span>     <span class="p">(</span><span class="n">Precision</span> <span class="n">level</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>然后，利用vaspkit生成KPOINTS，并进行vasp计算：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">102</span> <span class="mi">1</span> <span class="mf">0.03</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">blah</span> <span class="n">blah</span>
+<span class="n">sbatch</span> <span class="n">blah</span> <span class="n">blah</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>扩充晶胞并进行静态计算<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">CONTCAR</span> <span class="n">POSCAR</span><span class="o">-</span><span class="n">unitcell</span>
+<span class="n">phonopy</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">dim</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="o">--</span><span class="n">pa</span> <span class="n">auto</span> <span class="o">-</span><span class="n">c</span> <span class="n">POSCAR</span><span class="o">-</span><span class="n">unitcell</span>
+</pre></div>
+</div>
+<p>为避免文件名互相污染，把扩充好的有限位移(finite displacement, FD)文件POSCAR-00x都放在分别建立的FD-00x目录，再作静态计算。<em>另外，现在用在BSCC和hal9000上的phonopy和VASP联合操作时，会有一个bug：扩胞POSCAR-00x时，phonopy会破坏元素类型那一行，误标记为H元素，需要手动调整回Ti元素，或把POSCAR-unitcell调整回Ti元素。</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">FD</span><span class="o">-</span><span class="mi">001</span>
+<span class="n">cd</span> <span class="n">FD</span><span class="o">-</span><span class="mi">001</span>
+<span class="n">mv</span> <span class="o">../</span><span class="n">POSCAR</span><span class="o">-</span><span class="mi">001</span> <span class="n">POSCAR</span>
+<span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">101</span> <span class="n">ST</span>
+<span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">102</span> <span class="mi">1</span> <span class="mf">0.02</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">blah</span> <span class="n">blah</span>
+<span class="n">sbatch</span> <span class="n">blah</span> <span class="n">blah</span>
+</pre></div>
+</div>
+</section>
+<section id="hellmannfeynman">
+<h3>提取原子受到的Hellmann−Feynman力<a class="headerlink" href="#hellmannfeynman" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">..</span>
+<span class="n">phonopy</span> <span class="o">-</span><span class="n">f</span> <span class="n">FD</span><span class="o">-</span><span class="mi">001</span><span class="o">/</span><span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span> <span class="n">FD</span><span class="o">-</span><span class="mi">002</span><span class="o">/</span><span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span> <span class="o">../</span><span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+<p>（因为hcp-Ti比较简单，所以只生成了FD-001一组，）获得<code class="docutils literal notranslate"><span class="pre">FORCE_SETS</span></code>原子受力文件。</p>
+</section>
+<section id="id4">
+<h3>计算声子谱<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>首先利用<code class="docutils literal notranslate"><span class="pre">vaspkit</span></code>指定一个KPATH：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vaspkit</span> <span class="mi">3</span> <span class="mi">305</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>获得的<code class="docutils literal notranslate"><span class="pre">KPATH.phonopy</span></code>是phonopy计算声子的配置文件<code class="docutils literal notranslate"><span class="pre">band.conf</span></code>的蓝本。当然，需要补充一些必要参数：</p>
+<ul class="simple">
+<li><p>为了复现文献，要按文献的KPATH，即$\Gamma\rightarrow K\rightarrow M \rightarrow \Gamma \rightarrow A$排列：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>BAND = 0.000000 0.000000 0.000000  0.333333 0.333333 0.000000  0.500000 0.000000 0.000000  0.000000 0.000000 0.000000  0.000000 0.000000 0.500000 
+BAND_LABELS = $\Gamma$ K M $\Gamma$ A
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>补充材料信息说明：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ATOM_NAME</span> <span class="o">=</span> <span class="n">Ti</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>补充超晶胞说明：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DIM</span> <span class="o">=</span>  <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> 
+</pre></div>
+</div>
+<p>加入这些关键字，改写并保存为<code class="docutils literal notranslate"><span class="pre">band.conf</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ATOM_NAME = Ti
+NPOINTS = 501
+DIM =  3 3 3     
+BAND = 0.000000 0.000000 0.000000  0.333333 0.333333 0.000000  0.500000 0.000000 0.000000  0.000000 0.000000 0.000000  0.000000 0.000000 0.500000 
+BAND_LABELS = $\Gamma$ K M $\Gamma$ A
+MP = 30 30 30
+TETRAHEDRON = .TRUE.
+PDOS = 1 2
+BAND_CONNECTION = .TRUE.
+# FORCE_CONSTANTS = READ
+
+FORCE_SETS = READ
+# IRREPS = 0  0  0
+# SHOW_IRREPS = .TRUE.
+# LITTLE_COGROUP = .TRUE.
+</pre></div>
+</div>
+<p>计算声子谱：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">-</span><span class="n">c</span> <span class="n">POSCAR</span><span class="o">-</span><span class="n">unitcell</span> <span class="o">-</span><span class="n">p</span> <span class="o">-</span><span class="n">s</span> <span class="n">band</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>获取<code class="docutils literal notranslate"><span class="pre">band_dos.pdf</span></code>文件，包含着声子谱和声子态密度信息：</p>
+<p><img alt="phononspectrum-hcp" src="../_images/phonon-hcpTi.png" /></p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id5" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Togo A, Tanaka I. First principles phonon calculations in materials science[J]. Scripta Materialia, 2015, 108: 1–5.</p>
+</aside>
+</aside>
+</section>
+</section>
 </section>
 
 
