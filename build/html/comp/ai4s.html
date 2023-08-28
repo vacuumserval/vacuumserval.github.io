@@ -122,7 +122,7 @@ $$</p>
 <p>$$
 E(\mathbf{\mathcal{R}})\approx \mathfrak{f}\left(\mathbf{\mathcal{R}}\right)
 $$</p>
-<p>在最一般的三维$N$原子情形下，$\mathbf{\mathcal{R}}$的维度是$3N$，$3N$个原子体系的量子力学效应会使$f$的拟合非常困难，是为”维度灾难(Curse of dimensionality)”。最近，机器学习(machine-learning, ML)的迅速发展，特别是深度神经网络(deep neural network, DNN)在拟合领域的广泛使用，为MD势的建模提供了一个新方向——在ML的视角下，$\mathfrak{f}$并不是一个确定的函数，而是一个DNN的”黑箱”，这个黑箱的输入是描述原子构型的参数$\mathcal{D}\left(\mathbf{\mathcal{R}}\right)$，称之为”描述子(descriptor)”，输出是其对应的势能，我们只要用ML的方法，训练这个DNN就可以了。在众多类似工作中，由王涵、张林峰、鄂维南等首创的”深度势能(deep potential MD, DeePMD/DPMD/DP)”方法<a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><sup>,</sup><a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>是本课题组重点学习的方法，hal9000服务器已经被配置了DP方法的基本模块”deepmd-kit”：</p>
+<p>在最一般的三维$N$原子情形下，$\mathbf{\mathcal{R}}$的维度是$3N$，$3N$个原子体系的量子力学效应会使$f$的拟合非常困难，是为”维度灾难(Curse of dimensionality)”。最近，机器学习(machine-learning, ML)的迅速发展，特别是深度神经网络(deep neural network, DNN)在拟合领域的广泛使用，为MD势的建模提供了一个新方向——在ML的视角下，$\mathfrak{f}$并不是一个确定的函数，而是一个DNN的”黑箱”，这个黑箱的输入是描述原子构型的参数$\mathcal{D}\left(\mathbf{\mathcal{R}}\right)$，称之为”描述子(descriptor)”，输出是其对应的势能，我们只要用ML的方法，训练这个DNN就可以了。在众多类似工作中，由王涵、张林峰、鄂维南等首创的”深度势能(deep potential MD, DeePMD/DPMD/DP)”方法<a class="footnote-reference brackets" href="#id5" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><sup>,</sup><a class="footnote-reference brackets" href="#id6" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>是本课题组重点学习的方法，hal9000服务器已经被配置了DP方法的基本模块”deepmd-kit”：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">deepmd</span> <span class="o">-</span><span class="n">c</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">conda</span><span class="o">.</span><span class="n">deepmodeling</span><span class="o">.</span><span class="n">com</span> <span class="o">-</span><span class="n">c</span> <span class="n">defaults</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">deepmd</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="n">deepmd</span><span class="o">-</span><span class="n">kit</span><span class="o">=*=*</span><span class="n">gpu</span> <span class="n">libdeepmd</span><span class="o">=*=*</span><span class="n">gpu</span> <span class="n">lammps</span> <span class="n">cudatoolkit</span><span class="o">=</span><span class="mf">11.6</span> <span class="n">horovod</span> <span class="n">dpdata</span> <span class="o">-</span><span class="n">c</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">conda</span><span class="o">.</span><span class="n">deepmodeling</span><span class="o">.</span><span class="n">com</span> <span class="o">-</span><span class="n">c</span> <span class="n">defaults</span>
@@ -247,16 +247,20 @@ $$</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dp</span> <span class="n">compress</span> <span class="o">-</span><span class="n">i</span> <span class="n">graph</span><span class="o">.</span><span class="n">pb</span> <span class="o">-</span><span class="n">o</span> <span class="n">graph</span><span class="o">-</span><span class="n">compress</span><span class="o">.</span><span class="n">pb</span>
 </pre></div>
 </div>
-<p>尽管样例的<code class="docutils literal notranslate"><span class="pre">graph-compress.pb</span></code> 比<code class="docutils literal notranslate"><span class="pre">graph.pb</span></code>要大很多……(待精读手册看看原因）</p>
+<p>压缩的模型<code class="docutils literal notranslate"><span class="pre">graph-compress.pb</span></code>，采用了“DP-specific compression”算法<a class="footnote-reference brackets" href="#id7" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>， 在MD仿真中会未压缩的<code class="docutils literal notranslate"><span class="pre">graph.pb</span></code>要快。</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id4" role="note">
+<aside class="footnote brackets" id="id5" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Han Wang, Linfeng Zhang, Jiequn Han, and Weinan E. “DeePMD-kit: A deep learning package for many-body potential energy representation and molecular dynamics.” Computer Physics Communications 228 (2018): 178-184.</p>
 </aside>
-<aside class="footnote brackets" id="id5" role="note">
+<aside class="footnote brackets" id="id6" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
 <p>Jinzhe Zeng, Duo Zhang, Denghui Lu, Pinghui Mo, Zeyu Li, Yixiao Chen, Marián Rynik, Li’ang Huang, Ziyao Li, Shaochen Shi, Yingze Wang, Haotian Ye, Ping Tuo, Jiabin Yang, Ye Ding, Yifan Li, Davide Tisi, Qiyu Zeng, Han Bao, Yu Xia, Jiameng Huang, Koki Muraoka, Yibo Wang, Junhan Chang, Fengbo Yuan, Sigbjørn Løland Bore, Chun Cai, Yinnian Lin, Bo Wang, Jiayan Xu, Jia-Xin Zhu, Chenxing Luo, Yuzhi Zhang, Rhys E. A. Goodall, Wenshuo Liang, Anurag Kumar Singh, Sikai Yao, Jingchao Zhang, Renata Wentzcovitch, Jiequn Han, Jie Liu, Weile Jia, Darrin M. York, Weinan E, Roberto Car, Linfeng Zhang, Han Wang. “DeePMD-kit v2: A software package for Deep Potential models.” J. Chem. Phys., 159, 054801 (2023).</p>
+</aside>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">3</a><span class="fn-bracket">]</span></span>
+<p>Lu, Denghui, Wanrun Jiang, Yixiao Chen, Linfeng Zhang, Weile Jia, Han Wang, and Mohan Chen. “DP compress: A model compression scheme for generating efficient deep potential models.” Journal of chemical theory and computation 18, no. 9 (2022): 5559-5567.</p>
 </aside>
 </aside>
 </section>

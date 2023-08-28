@@ -2,11 +2,11 @@
 
 | Time       | Activity | Duration |
 | :---------:| :------  | :------  |
-| 0520-0630  | jogging  | 1h       |
+| 0520-0630  | autre    | 1h       |
 | 0830-1030  | research | 2h       |
 | 1030-1130  | reading  | 1h       |
 | 1330-1530  | research | 2h       |
-| 1530-1700  | french   | 1h30m    |
+| 1530-1700  | autre    | 1h30m    |
 | 1930-2100  | read/res | 1h30m    |
 | 2120-0520  | sleeping | 8h       |
 

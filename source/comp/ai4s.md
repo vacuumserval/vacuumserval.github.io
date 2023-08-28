@@ -52,10 +52,6 @@ conda activate deepmd
 ```
 启动并调用deepmd-kit环境。
 
-[^1]: Han Wang, Linfeng Zhang, Jiequn Han, and Weinan E. “DeePMD-kit: A deep learning package for many-body potential energy representation and molecular dynamics.” Computer Physics Communications 228 (2018): 178-184.
-
-[^2]: Jinzhe Zeng, Duo Zhang, Denghui Lu, Pinghui Mo, Zeyu Li, Yixiao Chen, Marián Rynik, Li’ang Huang, Ziyao Li, Shaochen Shi, Yingze Wang, Haotian Ye, Ping Tuo, Jiabin Yang, Ye Ding, Yifan Li, Davide Tisi, Qiyu Zeng, Han Bao, Yu Xia, Jiameng Huang, Koki Muraoka, Yibo Wang, Junhan Chang, Fengbo Yuan, Sigbjørn Løland Bore, Chun Cai, Yinnian Lin, Bo Wang, Jiayan Xu, Jia-Xin Zhu, Chenxing Luo, Yuzhi Zhang, Rhys E. A. Goodall, Wenshuo Liang, Anurag Kumar Singh, Sikai Yao, Jingchao Zhang, Renata Wentzcovitch, Jiequn Han, Jie Liu, Weile Jia, Darrin M. York, Weinan E, Roberto Car, Linfeng Zhang, Han Wang. “DeePMD-kit v2: A software package for Deep Potential models.” J. Chem. Phys., 159, 054801 (2023).
-
 ### 5分钟教程
 
 DeePMD手册上有一个[5分钟教程](https://tutorials.deepmodeling.com/en/latest/Tutorials/DeePMD-kit/learnDoc/run5minutes.html#)，以[这组数据](https://dp-public.oss-cn-beijing.aliyuncs.com/community/DeePMD-kit-FastLearn.tar)为例子，说明了DeePMD的基本使用方法：*Prepare data –> Training –> Freeze/Compress the model*。
@@ -181,4 +177,10 @@ dp freeze -o graph.pb
 dp compress -i graph.pb -o graph-compress.pb
 ```
 
-尽管样例的`graph-compress.pb` 比`graph.pb`要大很多……(待精读手册看看原因）
+压缩的模型`graph-compress.pb`，采用了“DP-specific compression”算法[^3]， 在MD仿真中会未压缩的`graph.pb`要快。
+
+[^1]: Han Wang, Linfeng Zhang, Jiequn Han, and Weinan E. “DeePMD-kit: A deep learning package for many-body potential energy representation and molecular dynamics.” Computer Physics Communications 228 (2018): 178-184.
+
+[^2]: Jinzhe Zeng, Duo Zhang, Denghui Lu, Pinghui Mo, Zeyu Li, Yixiao Chen, Marián Rynik, Li’ang Huang, Ziyao Li, Shaochen Shi, Yingze Wang, Haotian Ye, Ping Tuo, Jiabin Yang, Ye Ding, Yifan Li, Davide Tisi, Qiyu Zeng, Han Bao, Yu Xia, Jiameng Huang, Koki Muraoka, Yibo Wang, Junhan Chang, Fengbo Yuan, Sigbjørn Løland Bore, Chun Cai, Yinnian Lin, Bo Wang, Jiayan Xu, Jia-Xin Zhu, Chenxing Luo, Yuzhi Zhang, Rhys E. A. Goodall, Wenshuo Liang, Anurag Kumar Singh, Sikai Yao, Jingchao Zhang, Renata Wentzcovitch, Jiequn Han, Jie Liu, Weile Jia, Darrin M. York, Weinan E, Roberto Car, Linfeng Zhang, Han Wang. “DeePMD-kit v2: A software package for Deep Potential models.” J. Chem. Phys., 159, 054801 (2023).
+
+[^3]: Lu, Denghui, Wanrun Jiang, Yixiao Chen, Linfeng Zhang, Weile Jia, Han Wang, and Mohan Chen. "DP compress: A model compression scheme for generating efficient deep potential models." Journal of chemical theory and computation 18, no. 9 (2022): 5559-5567.
