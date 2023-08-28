@@ -8,3 +8,4 @@ Computational Materials
    comp/dft
    comp/md
    comp/pf
+   comp/ai4s

@@ -16,9 +16,11 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Leptailurus'
-copyright = '2023, Leptailurus serval'
-author = 'Leptailurus serval'
+project = 'Spherical Serval in a Vacuum'
+copyright = '2023, Spherical Serval'
+author = 'Spherical Serval'
+html_title = 'Spherical Serval in a Vacuum'
+html_favicon = 'avatar-sq.ico'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -60,8 +62,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_book_theme'
-# html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_book_theme'
+html_theme = 'sphinx_rtd_theme'
+# html_theme = 'nature'
 
 # # Add any paths that contain custom static files (such as style sheets) here,
 # # relative to this directory. They are copied after the builtin static files,

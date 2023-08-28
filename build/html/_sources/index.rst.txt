@@ -3,10 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Leptailurus's documentation!
+Spherical Serval in a Vacuum |yourimage|
 ======================================================
 
-Here is the work log of me, a spherical leptailurus serval in a vacuum (真空中的球形薮猫). As my name implies, I'm more interested in physical modelling than in real-world implementing.
+.. |yourimage| image:: avatar-sq.ico
+   :width: 48
+Here is the work log of me, a spherical serval in a vacuum (真空中的球形薮猫). The contents of this documentation is only valid in a vacuum environment, and only credible for a spherical case, i.e., I'm more interested in physical modelling, rather than in real-world implementing.
 
 .. toctree::
    :maxdepth: 2
