@@ -32,7 +32,7 @@ The correlation length at 1st order transition is generally finite, however, in 
 
 The divergence of the correlation length in the vicinity of a second order phase transition suggests that properties near the critical point can be accurately described within **an effective theory involving only long-range collective fluctuations** of the system. This invites the construction of a phenomenological Hamiltonian or Free energy which is constrained only by the fundamental symmetries of the system. Such a description goes under the name of *Ginzburg-Landau theory*.
 
-## Phonopy+VASP的声子谱计算
+## Phonopy+VASP的声子谱finite displacement计算
 
 基于文献[^1]，以$\alpha$-Ti的有限位移(finite displacement, FD)法为例。
 
@@ -43,7 +43,7 @@ conda activate icme
 atomsk --create hcp 2.95 4.68 Ti POSCAR
 vaspkit 1 101 LR
 ```
-默认的INCAR的收敛判据不够准确，应修改(主要是`ENCUT`, `NSW`，`EDIFF`，`EDIFFG`等参数；而`IBRION`初始时可设置为1，能量稳定下降后设置为2。)
+默认的INCAR的收敛判据不够准确，应修改(主要是`ENCUT`, `NSW`，`EDIFF`，`EDIFFG`等参数；而`IBRION`初始时可设置为1，能量稳定下降后设置为2；`EDIFF`，`EDIFFG`参数需要多次地、慢慢地降低，否则容易出现错误。)
 ```
 Global Parameters
 ISTART =  1            (Read existing wavefunction, if there)
@@ -71,8 +71,8 @@ ISMEAR =  0            (gaussian smearing method )
 SIGMA  =  0.05         (please check the width of the smearing)
 IBRION =  2            (Algorithm: 0-MD, 1-Quasi-New, 2-CG)
 ISIF   =  3            (optimize atomic coordinates and lattice parameters)
-EDIFF  =  1.0E-7      
-EDIFFG =  1.0E-6       (Ionic convergence, eV/A)
+EDIFF  =  1.0E-6      
+EDIFFG =  1.0E-5       (Ionic convergence, eV/A)
 PREC   =  Accurate     (Precision level)
 ```
 然后，利用vaspkit生成KPOINTS，并进行vasp计算：
@@ -162,5 +162,56 @@ phonopy -c POSCAR-unitcell -p -s band.conf
 获取`band_dos.pdf`文件，包含着声子谱和声子态密度信息：
 
 ![phononspectrum-hcp](img/phonon-hcpTi.png)
+
+## Phonopy+VASP的声子谱functional pertubation计算
+
+### 初始超胞SPOSCAR
+
+```
+phonopy -d --dim 3 3 3 --pa auto -c POSCAR-unitcell
+```
+除了生成了的位移晶胞POSCAR-00x，也生成了超胞SPOSCAR，密度泛函微扰计算的话，需要这个文件。
+```
+cp SPOSCAR FP/POSCAR
+cd FP
+vaspkit 1 101 DT
+vaspkit 1 102 1 0.03
+```
+这样生成的INCAR中，最好加入`NSW = 1`参数。另外，`EDIFFG=1e-6`即可。另外2，不知为什么，openacc的vasp（即nvhpc后缀）计算更稳定。
+
+### 提取原子受到的力常数
+
+```
+cd ..
+phonopy --fc FP/vasprun.xml
+```
+
+获得`FORCE_CONSTANTS`原子受力文件。
+
+### 计算声子谱
+
+与FD方法的区别在于，band.conf文件中应指定读取`FORCE_CONSTANTS`(而非`FORCE_SETS`)。
+
+```
+ATOM_NAME = Ti
+NPOINTS = 501
+DIM =  3 3 3     
+BAND = 0.000000 0.000000 0.000000  0.333333 0.333333 0.000000  0.500000 0.000000 0.000000  0.000000 0.000000 0.000000  0.000000 0.000000 0.500000 
+BAND_LABELS = $\Gamma$ K M $\Gamma$ A
+MP = 30 30 30
+TETRAHEDRON = .TRUE.
+PDOS = 1 2
+BAND_CONNECTION = .TRUE.
+FORCE_CONSTANTS = READ
+
+# FORCE_SETS = READ
+# IRREPS = 0  0  0
+# SHOW_IRREPS = .TRUE.
+# LITTLE_COGROUP = .TRUE.
+```
+
+获取`band_dos.pdf`文件，包含着声子谱和声子态密度信息：
+
+![phononspectrum-hcp-dfp](img/phonon-hcpTi-dfp.png)
 
 [^1]: Togo A, Tanaka I. First principles phonon calculations in materials science[J]. Scripta Materialia, 2015, 108: 1–5.

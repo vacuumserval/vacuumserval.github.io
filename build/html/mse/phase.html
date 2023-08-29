@@ -54,11 +54,17 @@
 <li class="toctree-l2"><a class="reference internal" href="dislocation.html">Dislocation &amp; Defects</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Phase Equilibria &amp; Phase Diagram</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#critical-opalescence-critical-point">Critical Opalescence &amp; Critical Point</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#phonopy-vasp">Phonopy+VASP的声子谱计算</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phonopy-vaspfinite-displacement">Phonopy+VASP的声子谱finite displacement计算</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id2">生成和弛豫晶格</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id3">扩充晶胞并进行静态计算</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hellmannfeynman">提取原子受到的Hellmann−Feynman力</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">计算声子谱</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phonopy-vaspfunctional-pertubation">Phonopy+VASP的声子谱functional pertubation计算</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sposcar">初始超胞SPOSCAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">提取原子受到的力常数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">计算声子谱</a></li>
 </ul>
 </li>
 </ul>
@@ -124,9 +130,9 @@ $$</p>
 <p>The correlation length at 1st order transition is generally finite, however, in the 2nd order transition, the correlation length becomes effectively infinite. Fluctuations become correlated over all distances, which forces the whole system to be in a unique, critical, phase.</p>
 <p>The divergence of the correlation length in the vicinity of a second order phase transition suggests that properties near the critical point can be accurately described within <strong>an effective theory involving only long-range collective fluctuations</strong> of the system. This invites the construction of a phenomenological Hamiltonian or Free energy which is constrained only by the fundamental symmetries of the system. Such a description goes under the name of <em>Ginzburg-Landau theory</em>.</p>
 </section>
-<section id="phonopy-vasp">
-<h2>Phonopy+VASP的声子谱计算<a class="headerlink" href="#phonopy-vasp" title="Permalink to this heading"></a></h2>
-<p>基于文献<a class="footnote-reference brackets" href="#id5" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>，以$\alpha$-Ti的有限位移(finite displacement, FD)法为例。</p>
+<section id="phonopy-vaspfinite-displacement">
+<h2>Phonopy+VASP的声子谱finite displacement计算<a class="headerlink" href="#phonopy-vaspfinite-displacement" title="Permalink to this heading"></a></h2>
+<p>基于文献<a class="footnote-reference brackets" href="#id7" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>，以$\alpha$-Ti的有限位移(finite displacement, FD)法为例。</p>
 <section id="id2">
 <h3>生成和弛豫晶格<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">icme</span>
@@ -134,7 +140,7 @@ $$</p>
 <span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">101</span> <span class="n">LR</span>
 </pre></div>
 </div>
-<p>默认的INCAR的收敛判据不够准确，应修改(主要是<code class="docutils literal notranslate"><span class="pre">ENCUT</span></code>, <code class="docutils literal notranslate"><span class="pre">NSW</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFF</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFFG</span></code>等参数；而<code class="docutils literal notranslate"><span class="pre">IBRION</span></code>初始时可设置为1，能量稳定下降后设置为2。)</p>
+<p>默认的INCAR的收敛判据不够准确，应修改(主要是<code class="docutils literal notranslate"><span class="pre">ENCUT</span></code>, <code class="docutils literal notranslate"><span class="pre">NSW</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFF</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFFG</span></code>等参数；而<code class="docutils literal notranslate"><span class="pre">IBRION</span></code>初始时可设置为1，能量稳定下降后设置为2；<code class="docutils literal notranslate"><span class="pre">EDIFF</span></code>，<code class="docutils literal notranslate"><span class="pre">EDIFFG</span></code>参数需要多次地、慢慢地降低，否则容易出现错误。)</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Global</span> <span class="n">Parameters</span>
 <span class="n">ISTART</span> <span class="o">=</span>  <span class="mi">1</span>            <span class="p">(</span><span class="n">Read</span> <span class="n">existing</span> <span class="n">wavefunction</span><span class="p">,</span> <span class="k">if</span> <span class="n">there</span><span class="p">)</span>
 <span class="n">ISPIN</span>  <span class="o">=</span>  <span class="mi">1</span>            <span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Spin</span> <span class="n">polarised</span> <span class="n">DFT</span><span class="p">)</span>
@@ -161,8 +167,8 @@ $$</p>
 <span class="n">SIGMA</span>  <span class="o">=</span>  <span class="mf">0.05</span>         <span class="p">(</span><span class="n">please</span> <span class="n">check</span> <span class="n">the</span> <span class="n">width</span> <span class="n">of</span> <span class="n">the</span> <span class="n">smearing</span><span class="p">)</span>
 <span class="n">IBRION</span> <span class="o">=</span>  <span class="mi">2</span>            <span class="p">(</span><span class="n">Algorithm</span><span class="p">:</span> <span class="mi">0</span><span class="o">-</span><span class="n">MD</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">Quasi</span><span class="o">-</span><span class="n">New</span><span class="p">,</span> <span class="mi">2</span><span class="o">-</span><span class="n">CG</span><span class="p">)</span>
 <span class="n">ISIF</span>   <span class="o">=</span>  <span class="mi">3</span>            <span class="p">(</span><span class="n">optimize</span> <span class="n">atomic</span> <span class="n">coordinates</span> <span class="ow">and</span> <span class="n">lattice</span> <span class="n">parameters</span><span class="p">)</span>
-<span class="n">EDIFF</span>  <span class="o">=</span>  <span class="mf">1.0E-7</span>      
-<span class="n">EDIFFG</span> <span class="o">=</span>  <span class="mf">1.0E-6</span>       <span class="p">(</span><span class="n">Ionic</span> <span class="n">convergence</span><span class="p">,</span> <span class="n">eV</span><span class="o">/</span><span class="n">A</span><span class="p">)</span>
+<span class="n">EDIFF</span>  <span class="o">=</span>  <span class="mf">1.0E-6</span>      
+<span class="n">EDIFFG</span> <span class="o">=</span>  <span class="mf">1.0E-5</span>       <span class="p">(</span><span class="n">Ionic</span> <span class="n">convergence</span><span class="p">,</span> <span class="n">eV</span><span class="o">/</span><span class="n">A</span><span class="p">)</span>
 <span class="n">PREC</span>   <span class="o">=</span>  <span class="n">Accurate</span>     <span class="p">(</span><span class="n">Precision</span> <span class="n">level</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -248,9 +254,57 @@ FORCE_SETS = READ
 </div>
 <p>获取<code class="docutils literal notranslate"><span class="pre">band_dos.pdf</span></code>文件，包含着声子谱和声子态密度信息：</p>
 <p><img alt="phononspectrum-hcp" src="../_images/phonon-hcpTi.png" /></p>
+</section>
+</section>
+<section id="phonopy-vaspfunctional-pertubation">
+<h2>Phonopy+VASP的声子谱functional pertubation计算<a class="headerlink" href="#phonopy-vaspfunctional-pertubation" title="Permalink to this heading"></a></h2>
+<section id="sposcar">
+<h3>初始超胞SPOSCAR<a class="headerlink" href="#sposcar" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phonopy</span> <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">dim</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="o">--</span><span class="n">pa</span> <span class="n">auto</span> <span class="o">-</span><span class="n">c</span> <span class="n">POSCAR</span><span class="o">-</span><span class="n">unitcell</span>
+</pre></div>
+</div>
+<p>除了生成了的位移晶胞POSCAR-00x，也生成了超胞SPOSCAR，密度泛函微扰计算的话，需要这个文件。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">SPOSCAR</span> <span class="n">FP</span><span class="o">/</span><span class="n">POSCAR</span>
+<span class="n">cd</span> <span class="n">FP</span>
+<span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">101</span> <span class="n">DT</span>
+<span class="n">vaspkit</span> <span class="mi">1</span> <span class="mi">102</span> <span class="mi">1</span> <span class="mf">0.03</span>
+</pre></div>
+</div>
+<p>这样生成的INCAR中，最好加入<code class="docutils literal notranslate"><span class="pre">NSW</span> <span class="pre">=</span> <span class="pre">1</span></code>参数。另外，<code class="docutils literal notranslate"><span class="pre">EDIFFG=1e-6</span></code>即可。另外2，不知为什么，openacc的vasp（即nvhpc后缀）计算更稳定。</p>
+</section>
+<section id="id5">
+<h3>提取原子受到的力常数<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">..</span>
+<span class="n">phonopy</span> <span class="o">--</span><span class="n">fc</span> <span class="n">FP</span><span class="o">/</span><span class="n">vasprun</span><span class="o">.</span><span class="n">xml</span>
+</pre></div>
+</div>
+<p>获得<code class="docutils literal notranslate"><span class="pre">FORCE_CONSTANTS</span></code>原子受力文件。</p>
+</section>
+<section id="id6">
+<h3>计算声子谱<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>与FD方法的区别在于，band.conf文件中应指定读取<code class="docutils literal notranslate"><span class="pre">FORCE_CONSTANTS</span></code>(而非<code class="docutils literal notranslate"><span class="pre">FORCE_SETS</span></code>)。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ATOM_NAME = Ti
+NPOINTS = 501
+DIM =  3 3 3     
+BAND = 0.000000 0.000000 0.000000  0.333333 0.333333 0.000000  0.500000 0.000000 0.000000  0.000000 0.000000 0.000000  0.000000 0.000000 0.500000 
+BAND_LABELS = $\Gamma$ K M $\Gamma$ A
+MP = 30 30 30
+TETRAHEDRON = .TRUE.
+PDOS = 1 2
+BAND_CONNECTION = .TRUE.
+FORCE_CONSTANTS = READ
+
+# FORCE_SETS = READ
+# IRREPS = 0  0  0
+# SHOW_IRREPS = .TRUE.
+# LITTLE_COGROUP = .TRUE.
+</pre></div>
+</div>
+<p>获取<code class="docutils literal notranslate"><span class="pre">band_dos.pdf</span></code>文件，包含着声子谱和声子态密度信息：</p>
+<p><img alt="phononspectrum-hcp-dfp" src="../_images/phonon-hcpTi-dfp.png" /></p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id5" role="note">
+<aside class="footnote brackets" id="id7" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Togo A, Tanaka I. First principles phonon calculations in materials science[J]. Scripta Materialia, 2015, 108: 1–5.</p>
 </aside>
