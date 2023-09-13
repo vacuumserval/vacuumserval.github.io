@@ -210,6 +210,11 @@ FORCE_CONSTANTS = READ
 # LITTLE_COGROUP = .TRUE.
 ```
 
+运行
+```
+phonopy -c POSCAR-unitcell -p -s band.conf
+```
+
 获取`band_dos.pdf`文件，包含着声子谱和声子态密度信息：
 
 ![phononspectrum-hcp-dfp](img/phonon-hcpTi-dfp.png)
