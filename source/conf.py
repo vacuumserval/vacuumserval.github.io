@@ -1,29 +1,27 @@
 # Configuration file for the Sphinx documentation builder.
 #
-# For the full list of built-in configuration values, see the documentation:
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../../'))
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('.'))
+
 
 # -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Spherical Serval in a Vacuum'
-copyright = '2023, Spherical Serval'
-author = 'Spherical Serval'
-html_title = 'Spherical Serval in a Vacuum'
-html_favicon = 'avatar-sq.ico'
-
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+project = 'Cat in Bldg. 5'
+copyright = "2023, Chats dans le bâtiment 5"
+author = "Chats dans le bâtiment 5"
+html_title = 'Cat in Bldg. 5'
+html_favicon = './images/icon-small.ico'
 
 # -- General configuration ---------------------------------------------------
 
@@ -37,16 +35,10 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "nbsphinx",
     "myst_parser",
-    "sphinx_copybutton",
+    "nbsphinx",
 ]
-
-# use language set by highlight directive if no language is set by role
-inline_highlight_respect_highlight = False
-
-# use language set by highlight directive if no role is set
-inline_highlight_literals = False
+source_suffix = {'.rst': 'restructuredtext', '.txt': 'markdown', '.md': 'markdown',}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -54,7 +46,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -62,11 +54,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'sphinx_book_theme'
 html_theme = 'sphinx_rtd_theme'
-# html_theme = 'nature'
 
-# # Add any paths that contain custom static files (such as style sheets) here,
-# # relative to this directory. They are copied after the builtin static files,
-# # so a file named "default.css" will overwrite the builtin "default.css".
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
