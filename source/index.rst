@@ -6,11 +6,11 @@
 Cat in Bldg. 5
 ==========================================
 
-.. .. image:: ./images/icon-small.jpg
-..    :width: 160px
-..    :height: 160px
-..    :alt: Bldg. 5 the Cat
-..    :align: right
+.. image:: ./images/icon-small.jpg
+   :width: 160px
+   :height: 160px
+   :alt: Bldg. 5 the Cat
+   :align: right
 
 To Whom It May Concern,
 
