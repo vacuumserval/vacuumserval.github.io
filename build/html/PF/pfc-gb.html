@@ -7,6 +7,7 @@
   <title>PFC: Grain Boundary Evolution &mdash; Cat in Bldg. 5</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/icon-small.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -95,6 +96,43 @@
 \phi(i,j\pm 1) &= \phi(i,j) \pm \frac{\partial \phi}{\partial y}dy +\frac{1}{2}\frac{\partial^2 \phi}{\partial y^2}dy^2 \\
 \phi(i\pm 1,j\pm 1) &= \phi(i,j) \pm \frac{\partial \phi}{\partial x}dx \pm \frac{\partial \phi}{\partial y}dy +\frac{1}{2}\frac{\partial^2 \phi}{\partial x^2}dx^2 +\frac{1}{2}\frac{\partial^2 \phi}{\partial y^2}dy^2
 \end{align}</span></p>
+<p>Sum up the 1st, 2nd, and 3rd equations: <span class="math">\begin{align}
+\phi(i+1,j)+\phi(i-1,j) &= 2\phi(i,j) + \frac{\partial^2 \phi}{\partial x^2}dx^2 \\
+\phi(i,j+1)+\phi(i,j-1) &= 2\phi(i,j) + \frac{\partial^2 \phi}{\partial y^2}dy^2 \\
+\phi(i+1,j+1)+\phi(i+1,j-1) &+ \phi(i-1,j+1)+\phi(i-1,j-1) \nonumber \\
+&= 4\phi(i,j) + 2\frac{\partial^2 \phi}{\partial x^2}dx^2 + 2\frac{\partial^2 \phi}{\partial y^2}dy^2
+\end{align}</span></p>
+<p><span class="math notranslate nohighlight">\(\frac{1}{2}\cdot\)</span> 1st Eq. <span class="math notranslate nohighlight">\(+ \frac{1}{2}\cdot\)</span> 2nd Eq. <span class="math notranslate nohighlight">\(+ \frac{1}{4}\cdot\)</span> 3rd Eq., when <span class="math notranslate nohighlight">\(\Delta x=dx=dy\)</span>:</p>
+<p><span class="math">\begin{align}
+\nabla^2\phi &= \frac{1}{\Delta x^2}\left\{\frac{1}{2}\left[\phi(i+1,j)+\phi(i-1,j) + \phi(i,j+1)+\phi(i,j-1) - 3\phi(i,j)\right]\right. \nonumber \\
+&+ \left.\frac{1}{4}\left[\phi(i+1,j+1)+\phi(i+1,j-1) + \phi(i-1,j+1)+\phi(i-1,j-1)\right] \right\} \nonumber \\
+&+\mathcal{O}(\Delta x^2)
+\end{align}</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">phi_ip</span> <span class="o">=</span> <span class="n">phi</span>
+    <span class="n">phi_im</span> <span class="o">=</span> <span class="n">phi</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">phi_ip</span><span class="p">)</span>
+<span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.32900598, 0.03884357, 0.54825546],
+       [0.16363956, 0.82332626, 0.04386308],
+       [0.40634821, 0.7576969 , 0.86676357]])
+</pre></div></div>
+</div>
 </section>
 </section>
 
