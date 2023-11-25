@@ -24,6 +24,16 @@ I have a bad memory and I don't type, so I have authorized my cat-slave to keep 
 * MD, molecular dynamics: MD is a computer simulation method for analyzing the physical movements of atoms and molecules. The atoms and molecules are allowed to interact for a fixed period of time, giving a view of the dynamic "evolution" of the system. 
 * PF, phase field mothod: PF is a mathematical model for solving interfacial problems, which substitutes boundary conditions at the interface by a partial differential equation for the evolution of an auxiliary field (the phase field) that takes the role of an order parameter.
 
+.. raw:: html
+
+  <p align="right"> Sincerely yours, </p>
+
+.. image:: ./images/sign.png
+   :width: 30px
+   :height: 30px
+   :alt: Bldg. 5 the Cat
+   :align: right
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

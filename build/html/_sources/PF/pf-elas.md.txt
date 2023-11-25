@@ -10,4 +10,4 @@
     </script>
 </head>
 
-# PF: $\alpha$ Phase Precipitation 
+# PF: Phase Precipitation 
