@@ -32,9 +32,9 @@ html_favicon = './images/icon-small.ico'
 extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.autodoc",
-    "sphinx.ext.coverage",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.autosectionlabel",
+    # "sphinx.ext.coverage",
+    # "sphinx.ext.napoleon",
+    # "sphinx.ext.autosectionlabel",
     "myst_parser",
     "nbsphinx",
 ]
