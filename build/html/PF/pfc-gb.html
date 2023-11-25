@@ -18,6 +18,8 @@
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -48,7 +50,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../DFT/index.html">Density Functional Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">PFC: Grain Boundary Evolution</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PFC: Grain Boundary Evolution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Laplacian-Operator">Laplacian Operator</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="pf-elas.html">PF: Phase Precipitation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fourier.html">Fourier Space</a></li>
 </ul>
@@ -72,7 +77,7 @@
           <li class="breadcrumb-item"><a href="index.html">Phase Field Method</a></li>
       <li class="breadcrumb-item active">PFC: Grain Boundary Evolution</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/PF/pfc-gb.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/PF/pfc-gb.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -80,8 +85,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pfc-grain-boundary-evolution">
-<h1>PFC: Grain Boundary Evolution<a class="headerlink" href="#pfc-grain-boundary-evolution" title="Link to this heading"></a></h1>
+  <section id="PFC:-Grain-Boundary-Evolution">
+<h1>PFC: Grain Boundary Evolution<a class="headerlink" href="#PFC:-Grain-Boundary-Evolution" title="Link to this heading"></a></h1>
+<section id="Laplacian-Operator">
+<h2>Laplacian Operator<a class="headerlink" href="#Laplacian-Operator" title="Link to this heading"></a></h2>
+<p>The finite difference method can be adopted to express the laplacian operator <span class="math notranslate nohighlight">\(\nabla^2\)</span> on a discrete mesh in terms of <span class="math notranslate nohighlight">\(\phi(i,j)\)</span>, i.e., <span class="math notranslate nohighlight">\(\nabla^2=\frac{\partial^2 \phi}{\partial x^2}+\frac{\partial^2 \phi}{\partial y^2}\)</span>. This can be done using a Taylor series since the neighours are on the order of <span class="math notranslate nohighlight">\(dx \sim dy \ll 1\)</span>, expanding <span class="math notranslate nohighlight">\(\phi(i,j)\)</span> around mesh point <span class="math notranslate nohighlight">\((i,j)\)</span>:</p>
+<p><span class="math">\begin{align}
+\phi(i\pm 1,j) &= \phi(i,j) \pm \frac{\partial \phi}{\partial x}dx +\frac{1}{2}\frac{\partial^2 \phi}{\partial x^2}dx^2 \\
+\phi(i,j\pm 1) &= \phi(i,j) \pm \frac{\partial \phi}{\partial y}dy +\frac{1}{2}\frac{\partial^2 \phi}{\partial y^2}dy^2 \\
+\phi(i\pm 1,j\pm 1) &= \phi(i,j) \pm \frac{\partial \phi}{\partial x}dx \pm \frac{\partial \phi}{\partial y}dy +\frac{1}{2}\frac{\partial^2 \phi}{\partial x^2}dx^2 +\frac{1}{2}\frac{\partial^2 \phi}{\partial y^2}dy^2
+\end{align}</span></p>
+</section>
 </section>
 
 
