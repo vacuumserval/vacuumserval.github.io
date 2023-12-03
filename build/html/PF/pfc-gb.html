@@ -53,7 +53,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">PFC: Grain Boundary Evolution</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Laplacian-Operator">Laplacian Operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-Elastic-Mismatch">the Elastic Mismatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-Elastic-Mismatch">the Elastic Mismatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-Gradient">the Gradient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-1st-term">the 1st term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-2nd-term">the 2nd term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-3rd-term">the 3rd term</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#the-Phase-Field-Crystal-Model">the Phase-Field Crystal Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-Kirkendall-Eq.-of-Motion">the Kirkendall Eq. of Motion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Grain-Boundaries-and-Dislocations">Grain Boundaries and Dislocations</a></li>
@@ -94,7 +100,6 @@
 <h1>PFC: Grain Boundary Evolution<a class="headerlink" href="#PFC:-Grain-Boundary-Evolution" title="Link to this heading"></a></h1>
 <section id="Laplacian-Operator">
 <h2>Laplacian Operator<a class="headerlink" href="#Laplacian-Operator" title="Link to this heading"></a></h2>
-<p>(Lin, before Friday)</p>
 <p>The finite difference method can be adopted to express the laplacian operator <span class="math notranslate nohighlight">\(\nabla^2\)</span> on a discrete mesh in terms of <span class="math notranslate nohighlight">\(\phi(i,j)\)</span>, i.e., <span class="math notranslate nohighlight">\(\nabla^2=\frac{\partial^2 \phi}{\partial x^2}+\frac{\partial^2 \phi}{\partial y^2}\)</span>. This can be done using a Taylor series since the neighours are on the order of <span class="math notranslate nohighlight">\(dx \sim dy \ll 1\)</span>, expanding <span class="math notranslate nohighlight">\(\phi(i,j)\)</span> around mesh point <span class="math notranslate nohighlight">\((i,j)\)</span>[1]:</p>
 <p><span class="math">\begin{align}
 \phi(i\pm 1,j) &= \phi(i,j) \pm \frac{\partial \phi}{\partial x}dx +\frac{1}{2}\frac{\partial^2 \phi}{\partial x^2}dx^2 \\
@@ -114,7 +119,7 @@
 &+\mathcal{O}(\Delta x^2)
 \end{align}</span></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -134,7 +139,7 @@
 </div>
 <p>A laplacian operator can be used to highlight gray level discontinuities in an image, and to deemphasize regions with slowly varying gray levels. A portrait of Laplace is adopted to show the effect of the laplacian operator:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -142,48 +147,219 @@
 <span class="n">laplace_gray</span> <span class="o">=</span> <span class="n">laplace</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1"># laplace_gray = plt.imread(&#39;../images/Einstein_tongue.jpg&#39;)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># 载入一张拉普拉斯的黑白图片</span>
-<span class="n">laplace_edge</span> <span class="o">=</span> <span class="n">laplacian</span><span class="p">(</span><span class="n">laplace</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">)</span> <span class="c1"># 载入一张拉普拉斯的黑白图片</span>
+<span class="n">laplace_edge</span> <span class="o">=</span> <span class="n">laplacian</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">laplace_edge</span><span class="p">)</span> <span class="c1"># 突出显示图片中的边界和轮廓</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x23227432330&gt;
+&lt;matplotlib.image.AxesImage at 0x1e7c75c4350&gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_pfc-gb_5_2.png" src="../_images/PF_pfc-gb_5_2.png" />
+<img alt="../_images/PF_pfc-gb_5_1.png" src="../_images/PF_pfc-gb_5_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_pfc-gb_5_3.png" src="../_images/PF_pfc-gb_5_3.png" />
+<img alt="../_images/PF_pfc-gb_5_2.png" src="../_images/PF_pfc-gb_5_2.png" />
 </div>
 </div>
 </section>
 <section id="the-Elastic-Mismatch">
 <h2>the Elastic Mismatch<a class="headerlink" href="#the-Elastic-Mismatch" title="Link to this heading"></a></h2>
-<p>(Lin, before Friday)[2]</p>
+<p>A model guarantees that when cells are brought together they deform collectively rather than shrink/grow and absorb each other: <span class="math">\begin{align}
+F = F_0+F_{int}
+\end{align}</span> in which <span class="math notranslate nohighlight">\(F_0\)</span> treats each cell as 2D soft body for which the equilibrium shape minimizes the following free energy: <span class="math">\begin{align}
+F_0=\sum_n\left\{\gamma_n\int_V\left[(\nabla\varphi_n)^2+\frac{30}{\lambda^2}\varphi^2(1-\varphi)^2\right]dV+\frac{\mu_n}{\pi R^2}\left(\pi R^2-\int_V\varphi^2dV\right)^2\right\}
+\end{align}</span> while the interaction term <span class="math notranslate nohighlight">\(F_{int}\)</span> is designed to repel each grain: <span class="math">\begin{align}
+F_{int}=\frac{30\kappa}{\lambda^2}\int_V\left(\sum_{n, m\neq n}\varphi_n^2\varphi_m^2\right)dV
+\end{align}</span> where <span class="math notranslate nohighlight">\(\gamma_n\)</span> is the parameter that controls the elasticity of the cells, <span class="math notranslate nohighlight">\(\lambda\)</span> corresponds to the width of the boundary of any cell, <span class="math notranslate nohighlight">\(R\)</span> the radius is the noninteracting cells tend to be circular, the energetic costs associated to change in cell area while keeping its volume approximately constant are determined by the parameter <span class="math notranslate nohighlight">\(\mu_n\)</span>, <span class="math notranslate nohighlight">\(\kappa\)</span> is the gradient energy coefficients between cells.</p>
+<p>The time evolution of each cell is described by: <span class="math">\begin{align}
+\frac{\partial \varphi_n}{\partial t} + v_n\cdot\nabla\varphi_n=-\frac{1}{2}\frac{\delta F}{\delta \varphi_n}
+\end{align}</span> where <span class="math notranslate nohighlight">\(v_n=v_{n,I}+v_{n,A}\)</span> can be divided into <span class="math notranslate nohighlight">\(v_{n,I}=\frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi_n)\sum_{m\neq n}\varphi_m^2\right]dV\)</span> the inactive part of the cell velocity, arising from the forces exerted on the cell by the other cells, and <span class="math notranslate nohighlight">\(v_{n,A}\)</span> the active part (selfpropulsion) due to the internal process that require energy consumption.</p>
+<p>Such that the time evolution of cells is described by the following two equations:</p>
+<p><span class="math">\begin{align}
+\frac{\partial \varphi_n}{\partial t} &= \gamma_n\nabla^2\varphi_n-\frac{30}{\lambda^2}\left[\gamma_n\varphi_n(1-\varphi_n) + 2\kappa \sum_{m\neq n}\varphi_n\varphi_m^2\right] \nonumber \\
+&- \frac{2\mu}{\pi R^2}\varphi_n\left[\int_v(\varphi_n)^2dV-\pi R^2\right] - v_n\cdot \nabla\varphi_n\\
+v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi_n)\sum_{m\neq n}\varphi_m^2\right]dV
+\end{align}</span></p>
+<section id="the-Gradient">
+<h3>the Gradient<a class="headerlink" href="#the-Gradient" title="Link to this heading"></a></h3>
+<p>To compute the <span class="math notranslate nohighlight">\(\nabla\varphi\)</span>, the <a class="reference external" href="https://pythonnumericalmethods.berkeley.edu/notebooks/chapter23.03-Finite-Difference-Method.html">finite difference method</a> is adopted. (The gradient, as well, is associated with a matrix’s “edges”.)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">phi_ipj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_ipj0=phi(i+1,j)</span>
+    <span class="n">phi_imj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_imj0=phi(i-1,j)</span>
+    <span class="n">phi_i0jp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_i0jm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dphi_dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">phi_ipj0</span> <span class="o">-</span> <span class="n">phi_imj0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">dphi_dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">phi_i0jp</span> <span class="o">-</span> <span class="n">phi_i0jm</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dphi_dx</span><span class="p">,</span> <span class="n">dphi_dy</span><span class="p">)</span>
+<span class="p">[</span><span class="n">dphix</span><span class="p">,</span> <span class="n">dphiy</span><span class="p">]</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dphix</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dphiy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1e7c25dbc20&gt;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_8_1.png" src="../_images/PF_pfc-gb_8_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_8_2.png" src="../_images/PF_pfc-gb_8_2.png" />
+</div>
+</div>
+</section>
+<section id="the-1st-term">
+<h3>the 1st term<a class="headerlink" href="#the-1st-term" title="Link to this heading"></a></h3>
+<p><span class="math notranslate nohighlight">\(\gamma_n\nabla^2\varphi_n\)</span>, in the book it is on page 97.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">phi_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># 测试用，只是想构造一个包含5个晶粒的场</span>
+<span class="k">def</span> <span class="nf">unieme</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">phi_all</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="p">[</span><span class="n">ncell</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">phi_all</span><span class="p">)</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ncell</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncell</span><span class="p">):</span>
+        <span class="n">first</span><span class="p">[</span><span class="n">n</span><span class="p">,:,:]</span><span class="o">=</span><span class="n">gamma</span><span class="o">*</span><span class="n">laplacian</span><span class="p">(</span><span class="n">phi_all</span><span class="p">[</span><span class="n">n</span><span class="p">,:,:],</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+<span class="n">term1</span> <span class="o">=</span> <span class="n">unieme</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">phi_3D</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">term1</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:])</span> <span class="c1"># 这与拉普拉斯edge照片是一样的</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1e7c760f230&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_10_1.png" src="../_images/PF_pfc-gb_10_1.png" />
+</div>
+</div>
+</section>
+<section id="the-2nd-term">
+<h3>the 2nd term<a class="headerlink" href="#the-2nd-term" title="Link to this heading"></a></h3>
+<p><span class="math notranslate nohighlight">\(\left[\gamma_n\varphi_n(1-\varphi_n) + 2\kappa \sum_{m\neq n}\varphi_n\varphi_m^2\right]\)</span>, in the book it is on Page 97.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">phi_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># 测试用，只是想构造一个包含5个晶粒的场</span>
+<span class="k">def</span> <span class="nf">deuxieme</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">phi_all</span><span class="p">):</span>
+    <span class="p">[</span><span class="n">ncell</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">phi_all</span><span class="p">)</span>
+    <span class="n">barrier</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">phi_all</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">phi_all</span><span class="p">)</span>
+    <span class="n">mutex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">phi_all</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncell</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncell</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">!=</span> <span class="n">n</span><span class="p">):</span>
+                <span class="n">mutex</span><span class="p">[</span><span class="n">n</span><span class="p">,:,:]</span> <span class="o">+=</span> <span class="n">phi_all</span><span class="p">[</span><span class="n">n</span><span class="p">,:,:]</span> <span class="o">*</span> <span class="n">phi_all</span><span class="p">[</span><span class="n">m</span><span class="p">,:,:]</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">mutex</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">kappa</span> <span class="o">*</span> <span class="n">mutex</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="n">barrier</span> <span class="o">+</span> <span class="n">mutex</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">second</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="n">deuxieme</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">phi_3D</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">term2</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1e7c4940260&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_12_1.png" src="../_images/PF_pfc-gb_12_1.png" />
+</div>
+</div>
+</section>
+<section id="the-3rd-term">
+<h3>the 3rd term<a class="headerlink" href="#the-3rd-term" title="Link to this heading"></a></h3>
+<p><span class="math notranslate nohighlight">\(\frac{2\mu}{\pi R^2}\varphi_n\left[\int_v(\varphi_n)^2dV-\pi R^2\right]\)</span>, in the book it is on Page 91.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">phi_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">laplace_gray</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># 测试用，只是想构造一个包含5个晶粒的场</span>
+<span class="k">def</span> <span class="nf">troisieme</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">phi_all</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="p">[</span><span class="n">ncell</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">phi_all</span><span class="p">)</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi_all</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="n">integral</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ncell</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">third</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">mu</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">phi_all</span><span class="o">*</span><span class="n">integral</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">third</span><span class="p">)</span>
+<span class="n">term3</span> <span class="o">=</span> <span class="n">troisieme</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">phi_3D</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">term3</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1e7c266b860&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_14_1.png" src="../_images/PF_pfc-gb_14_1.png" />
+</div>
+</div>
+</section>
 </section>
 <section id="the-Phase-Field-Crystal-Model">
 <h2>the Phase-Field Crystal Model<a class="headerlink" href="#the-Phase-Field-Crystal-Model" title="Link to this heading"></a></h2>
