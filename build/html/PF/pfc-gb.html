@@ -163,7 +163,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023bae53d0&gt;
+&lt;matplotlib.image.AxesImage at 0x27e03691400&gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -229,7 +229,7 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023bb94bc0&gt;
+&lt;matplotlib.image.AxesImage at 0x27e036eb050&gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -274,7 +274,7 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023bab1460&gt;
+&lt;matplotlib.image.AxesImage at 0x27e047d6390&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -316,7 +316,7 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023cc71250&gt;
+&lt;matplotlib.image.AxesImage at 0x27e0485a240&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -353,7 +353,7 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023ba78080&gt;
+&lt;matplotlib.image.AxesImage at 0x27e036e88f0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -426,7 +426,7 @@ v_{n,A}=v_{y,n,A}
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023d39f0b0&gt;
+&lt;matplotlib.image.AxesImage at 0x27e037447a0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -510,7 +510,7 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x2023d6030b0&gt;
+&lt;matplotlib.image.AxesImage at 0x27e051ee9c0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -531,7 +531,97 @@ v_n &= v_{n,A}+ \frac{60\kappa}{\xi\lambda^2}\int_V\left[\varphi_n(\nabla\varphi
 </section>
 <section id="the-Phase-Field-Crystal-Model">
 <h2>the Phase-Field Crystal Model<a class="headerlink" href="#the-Phase-Field-Crystal-Model" title="Link to this heading"></a></h2>
-<p>(Lin, before Sunday)[3]</p>
+<p>The free energy funtional can be designed to produce a periodic lattice structure at the ground state in some parameter range, in its simplest form it is given as: <span class="math">\begin{align}
+F(\psi)=\int_V\left[\varepsilon\frac{\psi^2}{2}+\frac{\psi^4}{4}+\frac{1}{2}(1+\nabla^2)^2\psi\right]dV
+\end{align}</span></p>
+<p>by taking a functional derivative, the conserved order parameter’s dynamical function is: <span class="math">\begin{align}
+\frac{\partial \psi}{\partial t} &= \nabla\cdot M \nabla\frac{\delta F}{\delta t} \\
+&\Downarrow \nonumber \\
+\frac{\partial \psi}{\partial t} &= \nabla^2M\left[\varepsilon\psi + \psi^3 + (1+2\nabla^2+\nabla^4)\psi\right]
+\end{align}</span></p>
+<p>Actually, with the above python codes, the function is solvable, the Laplacian operator is used again and again:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">def</span> <span class="nf">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">phi_ipj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_ipj0=phi(i+1,j)</span>
+    <span class="n">phi_imj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_imj0=phi(i-1,j)</span>
+    <span class="n">phi_i0jp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_i0jm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_ipjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_ipjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_lap</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipj0</span><span class="o">+</span><span class="n">phi_imj0</span><span class="o">+</span><span class="n">phi_i0jp</span><span class="o">+</span><span class="n">phi_i0jm</span><span class="p">)</span><span class="o">+</span><span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipjp</span><span class="o">+</span><span class="n">phi_imjp</span><span class="o">+</span><span class="n">phi_ipjm</span><span class="o">+</span><span class="n">phi_imjm</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">phi_lap</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cal_dphidt</span><span class="p">(</span><span class="n">mobility</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">unieme</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">phi</span>
+    <span class="n">deuxieme</span> <span class="o">=</span> <span class="n">phi</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">troisieme</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span> <span class="o">+</span> <span class="n">laplacian</span><span class="p">(</span><span class="n">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">dedans</span> <span class="o">=</span> <span class="n">mobility</span> <span class="o">*</span> <span class="p">(</span><span class="n">unieme</span> <span class="o">+</span> <span class="n">deuxieme</span> <span class="o">+</span> <span class="n">troisieme</span><span class="p">)</span>
+    <span class="n">dphidt</span> <span class="o">=</span> <span class="n">laplacian</span><span class="p">(</span><span class="n">dedans</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dphidt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In the book on page 341 it says “For all cases the temperature was set to values of <span class="math notranslate nohighlight">\(\varepsilon = -0.25\)</span> and the density values for the triangular phase was set to <span class="math notranslate nohighlight">\(\psi_{\triangleright}=-0.285\)</span> and the stripe phase to <span class="math notranslate nohighlight">\(\psi_{\square}=-0.085\)</span> as indicated with the red circles in the phase diagram”.</p>
+<p><span class="math">\begin{align}
+Nx &= Ny = 64 \nonumber \\
+dx &= dy = \frac{\pi}{4} \nonumber \\
+\varepsilon &= epsilon = -0.25 \nonumber \\
+\psi_{\triangleright} &= psi\_tri=-0.285 \nonumber \\
+\psi_{\square} &= psi\_squ=-0.085 \nonumber
+\end{align}</span></p>
+<p>Make it run!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nx</span> <span class="o">=</span> <span class="n">Ny</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>
+<span class="n">nstep</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">mobility</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.25</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="mf">5e-2</span> <span class="c1"># 初始给一个噪声，促进形核</span>
+<span class="n">phi_tri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">-</span><span class="mf">0.285</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+<span class="n">phi_squ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">-</span><span class="mf">0.085</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">istep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nstep</span><span class="p">):</span>
+    <span class="n">phi_tri</span> <span class="o">+=</span> <span class="n">dt</span><span class="o">*</span><span class="n">cal_dphidt</span><span class="p">(</span><span class="n">mobility</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">phi_tri</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">phi_squ</span> <span class="o">+=</span> <span class="n">dt</span><span class="o">*</span><span class="n">cal_dphidt</span><span class="p">(</span><span class="n">mobility</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">phi_squ</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">phi_tri</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">phi_squ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x27e054106e0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_24_1.png" src="../_images/PF_pfc-gb_24_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-gb_24_2.png" src="../_images/PF_pfc-gb_24_2.png" />
+</div>
+</div>
 </section>
 <section id="the-Kirkendall-Eq.-of-Motion">
 <h2>the Kirkendall Eq. of Motion<a class="headerlink" href="#the-Kirkendall-Eq.-of-Motion" title="Link to this heading"></a></h2>
