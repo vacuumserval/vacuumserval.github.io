@@ -6,7 +6,7 @@
 Cat in Bldg. 5
 ==========================================
 
-.. image:: ./images/icon-small.jpg
+.. image:: ./images/icon-big.jpg
    :width: 160px
    :height: 160px
    :alt: Bldg. 5 the Cat
@@ -23,6 +23,9 @@ I have a bad memory and I don't type, so I have authorized my cat-slave to keep 
 * DNN, deep neural networks: DNN is the subset of machine learning methods which are based on artificial neural networks. The adjective "deep" refers to the use of multiple layers in the network.
 * MD, molecular dynamics: MD is a computer simulation method for analyzing the physical movements of atoms and molecules. The atoms and molecules are allowed to interact for a fixed period of time, giving a view of the dynamic "evolution" of the system. 
 * PF, phase field mothod: PF is a mathematical model for solving interfacial problems, which substitutes boundary conditions at the interface by a partial differential equation for the evolution of an auxiliary field (the phase field) that takes the role of an order parameter.
+* MI, Materials Infomatics: Materials informatics is a field of study that applies the principles of informatics and data science to materials science and engineering to improve the understanding, use, selection, development, and discovery of materials.
+
+
 
 .. raw:: html
 
@@ -40,6 +43,7 @@ I have a bad memory and I don't type, so I have authorized my cat-slave to keep 
 
    DFT/index
    PF/index
+   MI/index
 
 
 Indices and tables
