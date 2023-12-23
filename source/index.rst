@@ -27,7 +27,7 @@ I have a bad memory and I don't type, so I have authorized my cat-slave to keep 
 
 * ... ...
 
-And those are the things I would like to share to you. Well, in the end of the letter, I have to sign my name, again, my name is not important. Since "I learned very early the difference between knowing the *name* of something and **knowing something**" (Richard P. Feynman), I'll just sign my claw mark here.
+And those are the things I would like to share with you. Well, in the end of the letter, I have to sign my name, again, my name is not important. Since "I learned very early the difference between knowing the *name* of something and **knowing something**" (Richard P. Feynman). I wish you could **know something** by reading this mémoire, and I'll just sign my claw mark here.
 
 .. raw:: html
 
