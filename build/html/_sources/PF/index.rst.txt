@@ -13,3 +13,4 @@ Phase Field Method
    pfc-gb
    pf-elas
    fourier
+   kirkendall

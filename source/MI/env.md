@@ -66,14 +66,21 @@ Noticed that the prefix braket has been changed to "(mge)".
 
 Then we just need to follow the [matminer](https://hackingmaterials.lbl.gov/matminer/installation.html), [pymatgen](https://pymatgen.org/installation.html), [scikit-learn](https://scikit-learn.org/stable/install.html), [pytorch](https://pytorch.org/get-started/locally/) instructions to install them. 
 
-Since pytorch has the most complex dependencies and is not in the same repository, we postpone the setup for pytorch at this moment.
+Since pytorch has the most complex dependencies and is not in the same repository, we postpone the setup for pytorch at this moment. If you would like to install pytorch, please create **ANOTHER** environment, and install Pytorch in that environment, for example:
+```
+mamba create -n torch python=3.10
+mamba activate torch
+mamba install pytorch torchvision torchaudio cpuonly -c pytorch
+```
+
+![mambatorch](./images/mambatorch.png "mambatorch")
 <!-- ```
 mamba install pytorch torchvision torchaudio cpuonly -c pytorch
 ```
 
 ![mambatorch](./images/mambatorch.png "mambatorch") -->
 
-The other packages can be installed together (BTW, the `mamba install package_name -c blahblah` command means from 'blahblah' repository we install the package.):
+If you don't install pytorch, then the other packages can be installed together (BTW, the `mamba install package_name -c blahblah` command means from 'blahblah' repository we install the package.):
 ```
 mamba install scikit-learn pymatgen matminer numpy scipy matplotlib -c conda-forge
 ```

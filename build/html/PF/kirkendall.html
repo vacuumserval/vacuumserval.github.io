@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kirkendall: A PFC application &mdash; Cat in Bldg. 5</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+    <link rel="shortcut icon" href="../_static/icon-small.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Materials Informatics" href="../MI/index.html" />
+    <link rel="prev" title="Fourier Space" href="fourier.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Cat in Bldg. 5
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../DFT/index.html">Density Functional Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pfc-gb.html">PFC: Grain Boundary Evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pf-elas.html">PF: Phase Precipitation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fourier.html">Fourier Space</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Kirkendall: A PFC application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Free-Energy">Free Energy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Implementation">Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Laplacian-Operator">Laplacian Operator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-Kirkendall-Dynamics">the Kirkendall Dynamics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#3.1.-Single-crystal:-vacancy-diffusion">3.1. <em>Single crystal: vacancy diffusion</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../MI/index.html">Materials Informatics</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cat in Bldg. 5</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Phase Field Method</a></li>
+      <li class="breadcrumb-item active">Kirkendall: A PFC application</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PF/kirkendall.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Kirkendall:-A-PFC-application">
+<h1>Kirkendall: A PFC application<a class="headerlink" href="#Kirkendall:-A-PFC-application" title="Link to this heading"></a></h1>
+<p>In this application, Ref. <a class="reference external" href="ELDER%20K%20R,%20THORNTON%20K,%20HOYT%20J%20J.%20The%20Kirkendall%20effect%20in%20the%20phase%20field%20crystal%20model%5BJ/OL%5D.%20Philosophical%20Magazine,%202011,%2091(1):%20151-164.%20DOI:10.1080/14786435.2010.506427.">1</a> is reproduced.</p>
+<section id="Free-Energy">
+<h2>Free Energy<a class="headerlink" href="#Free-Energy" title="Link to this heading"></a></h2>
+<p>The free energy functional of the Kirkendall model reads:</p>
+<p><span class="math">\begin{align}
+F = \int d\mathbf{x}\left[\frac{n}{2}\Lamba^0n - \frac{t}{3}n^3 + \right]
+\end{align}</span></p>
+</section>
+<section id="Implementation">
+<h2>Implementation<a class="headerlink" href="#Implementation" title="Link to this heading"></a></h2>
+<section id="Laplacian-Operator">
+<h3>Laplacian Operator<a class="headerlink" href="#Laplacian-Operator" title="Link to this heading"></a></h3>
+<p>In [1]’s dynamical Eqn. (3~4), there are Laplacian operations again and again, in order to simplify the code and to increase the accuracy of the Laplacian operator, the <code class="docutils literal notranslate"><span class="pre">scipy.ndimage.laplace</span></code> function in the scipy package is used.</p>
+<p>The following code is used to compare our function in the <a class="reference internal" href="pfc-gb.html"><span class="doc">PFC: Grain Boundary Evolution</span></a> section, and in this section:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">def</span> <span class="nf">laplacian</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">phi_ipj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_ipj0=phi(i+1,j)</span>
+    <span class="n">phi_imj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_imj0=phi(i-1,j)</span>
+    <span class="n">phi_i0jp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_i0jm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_ipjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_ipjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_lap</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipj0</span><span class="o">+</span><span class="n">phi_imj0</span><span class="o">+</span><span class="n">phi_i0jp</span><span class="o">+</span><span class="n">phi_i0jm</span><span class="p">)</span><span class="o">+</span><span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipjp</span><span class="o">+</span><span class="n">phi_imjp</span><span class="o">+</span><span class="n">phi_ipjm</span><span class="o">+</span><span class="n">phi_imjm</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">phi_lap</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">lap</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">laplace</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../images/Laplace-Pierre-Simon.jpg&#39;</span><span class="p">)</span>
+<span class="n">img_gray</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">edge1</span> <span class="o">=</span> <span class="n">laplacian</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">edge2</span> <span class="o">=</span> <span class="n">lap</span><span class="p">(</span><span class="n">img_gray</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>  <span class="c1"># left side</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>  <span class="c1"># right side</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">edge1</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">edge2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1d54230bdf0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_3_1.png" src="../_images/PF_kirkendall_3_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="the-Kirkendall-Dynamics">
+<h2>the Kirkendall Dynamics<a class="headerlink" href="#the-Kirkendall-Dynamics" title="Link to this heading"></a></h2>
+<p>In Ref. [1]’s Eq. (3~4):</p>
+<p><span class="math">\begin{align}
+\frac{\partial n_A}{\partial t} &= M_A\nabla^2\left\{\Lambda^0n-tn^2+vn^3+\left[w+B_2^ln^2\right]\psi+u\psi^3-K\nabla^2\psi\right\} \\
+\frac{\partial n_B}{\partial t} &= M_B\nabla^2\left\{\Lambda^0n-tn^2+vn^3-\left[w+B_2^ln^2\right]\psi-u\psi^3+K\nabla^2\psi\right\}
+\end{align}</span></p>
+<p>since <span class="math notranslate nohighlight">\(n=n_A+n_B\)</span> and <span class="math notranslate nohighlight">\(\psi=n_A-n_B\)</span>:</p>
+<p><span class="math">\begin{align}
+\frac{\partial n}{\partial t} &= (M_A+M_B)\nabla^2\left(\Lambda^0n-tn^2+vn^3\right) \nonumber  \\
+&+ (M_A-M_B)\left[\left(w+B_2^ln^2\right)\psi+u\psi^3-K\nabla^2\psi\right] \\
+\frac{\partial \psi}{\partial t} &= (M_A-M_B)\nabla^2\left(\Lambda^0n-tn^2+vn^3\right) \nonumber  \\
+&+ (M_A+M_B)\left[\left(w+B_2^ln^2\right)\psi+u\psi^3-K\nabla^2\psi\right]
+\end{align}</span></p>
+<p>And the parameters are</p>
+<p><span class="math">\begin{align}
+a & = a = 6.927 \nonumber \\
+B_0^l &= B0l = 0.7 \nonumber \\
+B_2^l &= B2l = -1.8 \nonumber \\
+B_0^x &= B0x = 1.0 \nonumber \\
+t &= t = 0.6 \nonumber \\
+v &= v = 1.0 \nonumber \\
+K &= K = 4.0 \nonumber \\
+w &= w = 1.0 \nonumber \\
+u &= u = 4.0 \nonumber \\
+n_{liquid} &= nliq = -0.2517 \nonumber \\
+n_{solid} &= nsld = -0.1503 \nonumber \\
+\Delta x &= dx = a/7 \nonumber
+\end{align}</span></p>
+<section id="3.1.-Single-crystal:-vacancy-diffusion">
+<h3>3.1. <em>Single crystal: vacancy diffusion</em><a class="headerlink" href="#3.1.-Single-crystal:-vacancy-diffusion" title="Link to this heading"></a></h3>
+<p>We first reproduce the Sec. 3.1, “a single crystal that contains an initial concentration inhomogeneity in the absence of grain boundaries, surfaces or other natural sources or sinks of vacancies”. Here</p>
+<p><span class="math">\begin{align}
+L_x & = Lx = a \nonumber \\
+L_y & = Ly = 161 a_y \nonumber \\
+\psi & = psi =
+\begin{cases}
+0.1\; for\; y=[-L_y/2,0] \nonumber \\
+-0.1\; for\; y=[0, L_y/2] \nonumber \\
+\end{cases}
+\nonumber \\
+n & n = \bar{n} + C\left[cos(2q_yy)/2-cos(q_xx)cos(q_yy)\right] \nonumber \\
+\bar{n} &= nbar = -0.1501 \nonumber \\
+a_y &= ay = \sqrt{3}a \nonumber \\
+q_x &= qx = \frac{2\pi}{a} \nonumber \\
+q_y &= qy = \frac{q_x}{\sqrt{3}} \nonumber \\
+M_A &= MA = 1.0 \nonumber \\
+M_B &= MB = 0.1 \nonumber
+\end{align}</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">def</span> <span class="nf">lapCalc</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">lap</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">laplace</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">lap</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">lapn</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">lap2n</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">lapn</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">B0l</span><span class="o">-</span><span class="n">B0x</span><span class="p">)</span><span class="o">*</span><span class="n">n</span>
+    <span class="n">ter2</span> <span class="o">=</span> <span class="n">B2l</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">ter3</span> <span class="o">=</span> <span class="n">B0x</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">lapn</span><span class="o">+</span><span class="n">lap2n</span><span class="p">)</span>
+    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span> <span class="o">+</span> <span class="n">ter3</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">lmdn</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dynnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">lappsi</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">+</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">lmdn</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ter2</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">-</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">w</span><span class="o">+</span><span class="n">B2l</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">psi</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">K</span> <span class="o">*</span> <span class="n">lappsi</span><span class="p">)</span>
+    <span class="n">dynn</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dynn</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dynpsiCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">lappsi</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">-</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">lmdn</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="n">ter2</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">+</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">w</span><span class="o">+</span><span class="n">B2l</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">psi</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">K</span> <span class="o">*</span> <span class="n">lappsi</span><span class="p">)</span>
+    <span class="n">dynpsi</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dynpsi</span><span class="p">)</span>
+<span class="c1"># parameter list</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">6.927</span>
+<span class="n">ay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span>
+<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1501</span>
+<span class="n">B0l</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">B2l</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.8</span>
+<span class="n">B0x</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">v</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">u</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.0005</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="mi">7</span>
+<span class="n">Lx</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">a</span>
+<span class="n">Ly</span> <span class="o">=</span> <span class="mi">161</span><span class="o">*</span><span class="n">ay</span>
+<span class="n">Nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Lx</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
+<span class="n">Ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ly</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
+<span class="n">Ny_div2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">qx</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">a</span>
+<span class="n">qy</span> <span class="o">=</span> <span class="n">qx</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">MA</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">MB</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">tstep</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">tdump</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">xlst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">ylst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ny</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="p">[</span><span class="n">xmat</span><span class="p">,</span> <span class="n">ymat</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xlst</span><span class="p">,</span> <span class="n">ylst</span><span class="p">,</span><span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+<span class="c1"># Initialisation</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+<span class="n">psi</span><span class="p">[:,</span><span class="n">Ny_div2</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">psi</span><span class="p">[:,:</span><span class="n">Ny_div2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="c1"># n = nbar + C*(np.cos(2*qy*ymat)/2 - np.cos(qx*xmat)*np.cos(qy*ymat))</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">nbar</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">C</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">qx</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">qy</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span>
+<span class="c1"># n = np.random.normal(nbar, 0.01, (Nx, Ny))</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tstep</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">+=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">+=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynpsiCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">%</span><span class="k">tdump</span> == 0):
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">[:,</span><span class="n">Ny_div2</span><span class="o">-</span><span class="mi">160</span><span class="p">:</span><span class="n">Ny_div2</span><span class="o">+</span><span class="mi">160</span><span class="p">])</span> <span class="c1"># 样品很长，只展示中间320个单位长度的信息</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:11: RuntimeWarning: overflow encountered in square
+  ter2 = B2l*psi**2
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:19: RuntimeWarning: overflow encountered in multiply
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:19: RuntimeWarning: overflow encountered in power
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:19: RuntimeWarning: invalid value encountered in add
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:20: RuntimeWarning: invalid value encountered in add
+  dynn = ter1 + ter2
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:12: RuntimeWarning: invalid value encountered in add
+  ter3 = B0x*(n+2*lapn+lap2n)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:25: RuntimeWarning: overflow encountered in square
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:25: RuntimeWarning: overflow encountered in multiply
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:25: RuntimeWarning: invalid value encountered in subtract
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:25: RuntimeWarning: overflow encountered in power
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:25: RuntimeWarning: invalid value encountered in add
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:26: RuntimeWarning: overflow encountered in square
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:26: RuntimeWarning: overflow encountered in multiply
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:26: RuntimeWarning: overflow encountered in power
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:26: RuntimeWarning: invalid value encountered in add
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:11: RuntimeWarning: overflow encountered in multiply
+  ter2 = B2l*psi**2
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:18: RuntimeWarning: overflow encountered in square
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:18: RuntimeWarning: overflow encountered in multiply
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:18: RuntimeWarning: overflow encountered in power
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:18: RuntimeWarning: invalid value encountered in add
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:19: RuntimeWarning: overflow encountered in square
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_11544\383490052.py:19: RuntimeWarning: invalid value encountered in subtract
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_1.png" src="../_images/PF_kirkendall_7_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_2.png" src="../_images/PF_kirkendall_7_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_3.png" src="../_images/PF_kirkendall_7_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_4.png" src="../_images/PF_kirkendall_7_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_5.png" src="../_images/PF_kirkendall_7_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_6.png" src="../_images/PF_kirkendall_7_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_7.png" src="../_images/PF_kirkendall_7_7.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_8.png" src="../_images/PF_kirkendall_7_8.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_9.png" src="../_images/PF_kirkendall_7_9.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_7_10.png" src="../_images/PF_kirkendall_7_10.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fourier.html" class="btn btn-neutral float-left" title="Fourier Space" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../MI/index.html" class="btn btn-neutral float-right" title="Materials Informatics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Chats dans le bâtiment 5.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
