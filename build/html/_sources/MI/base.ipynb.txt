@@ -1,0 +1,95 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# The Computational Materials Infrastructure"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Conda Environment for Python\n",
+    "\n",
+    "Conda is an open-source, cross-platform, language-agnostic package manager and environment management system. It was originally developed to solve difficult package management challenges faced by Python data scientists, and today is a popular package manager for Python and R. To (efficiently) use Python, the first thing we need to do is to install [(mini)conda]((https://docs.conda.io/projects/miniconda/en/latest)), by simply downloading the [latest miniconda installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe), clicking \"next\", until you see and check the \"Register Miniconda3 as my default Python 3.11\" option in the \"Advanced Installation Options\" step.\n",
+    "\n",
+    "![miniconda](./images/minicondaadvanceinstall.png \"miniconda\")\n",
+    "\n",
+    "To run Python code and to manage Python environment, the \"Anaconda prompt\" app shoule be called.\n",
+    "\n",
+    "![condaapp](./images/app.png \"condaapp\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Python Packages\n",
+    "\n",
+    "A Python package usually consists of several modules, where \"module\" is a Python program that you import to make your code work more efficiently. In this tutorial, we need the \"numpy\", \"matplotlib\", \"jupyter\", \"notebook\" packages. To install them in your Python \"base\" environment, simply call the \"Anaconda Prompt\" and type\n",
+    "```\n",
+    "conda install numpy matplotlib jupyter notebook\n",
+    "```\n",
+    "\n",
+    "If it prompts out something, just input `y` and enter.\n",
+    "\n",
+    "![condaup](./images/update.png \"condaupdate\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Run Python Code\n",
+    "\n",
+    "There are multiple ways to run python code.\n",
+    "\n",
+    "### Save As a .py File (**not** recommanded)\n",
+    "\n",
+    "You may save your Python code to a text file (usually end with a .py suffix), for example, copy and past\n",
+    "\n",
+    "```\n",
+    "print('Hello, World.')\n",
+    "```\n",
+    "to a file `hello.py`, then call the \"Anaconda prompt\" to run the code:\n",
+    "\n",
+    "![hello](./images/hello.png \"hello\")\n",
+    "\n",
+    "As you can see this method is **not** interactive, the other method (Jupyter Notebook) is recommanded!\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Jupyter Notebook (recommanded)\n",
+    "\n",
+    "The Jupyter Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and more. The Python code can be saved to .ipynb format and you may use Jupyter notebook to run it interactively!\n",
+    "\n",
+    "For example, here we have [a Jupyter Notebook file for the Kronig-Penney model, please click here to download it.](./Kronig-Penney.ipynb)\n",
+    "\n",
+    "Then, in the \"Anaconda prompt\", type \n",
+    "```\n",
+    "jupyter notebook\n",
+    "```\n",
+    "to activate the web-based interactive notebook.\n",
+    "![jupyter](./images/jupyter.png \"jupyter\")\n",
+    "\n",
+    "In the jupyter notebook, browse and navigate the directory in which you downloaded 'Kronig-Penney.ipynb'.\n",
+    "![jupyternavi](./images/navi.png \"navigation\")\n",
+    "\n",
+    "Click and run Python code interactively:\n",
+    "![jupyteruse](./images/usenotebook.png \"use\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Computational Materials Infrastructure &mdash; Cat in Bldg. 5</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="shortcut icon" href="../_static/icon-small.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="ENV: Environment Setup" href="env.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Cat in Bldg. 5
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../DFT/index.html">Density Functional Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PF/index.html">Phase Field Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Materials Informatics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="env.html">ENV: Environment Setup</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The Computational Materials Infrastructure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Conda-Environment-for-Python">Conda Environment for Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Python-Packages">Python Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Run-Python-Code">Run Python Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Save-As-a-.py-File-(not-recommanded)">Save As a .py File (<strong>not</strong> recommanded)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Jupyter-Notebook-(recommanded)">Jupyter Notebook (recommanded)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cat in Bldg. 5</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Materials Informatics</a></li>
+      <li class="breadcrumb-item active">The Computational Materials Infrastructure</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/MI/base.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="The-Computational-Materials-Infrastructure">
+<h1>The Computational Materials Infrastructure<a class="headerlink" href="#The-Computational-Materials-Infrastructure" title="Link to this heading"></a></h1>
+<section id="Conda-Environment-for-Python">
+<h2>Conda Environment for Python<a class="headerlink" href="#Conda-Environment-for-Python" title="Link to this heading"></a></h2>
+<p>Conda is an open-source, cross-platform, language-agnostic package manager and environment management system. It was originally developed to solve difficult package management challenges faced by Python data scientists, and today is a popular package manager for Python and R. To (efficiently) use Python, the first thing we need to do is to install <a class="reference external" href="(https://docs.conda.io/projects/miniconda/en/latest)">(mini)conda</a>, by simply downloading the <a class="reference external" href="https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe">latest miniconda
+installer</a>, clicking “next”, until you see and check the “Register Miniconda3 as my default Python 3.11” option in the “Advanced Installation Options” step.</p>
+<img alt="miniconda" src="../_images/minicondaadvanceinstall.png" />
+<p>To run Python code and to manage Python environment, the “Anaconda prompt” app shoule be called.</p>
+<img alt="condaapp" src="../_images/app.png" />
+</section>
+<section id="Python-Packages">
+<h2>Python Packages<a class="headerlink" href="#Python-Packages" title="Link to this heading"></a></h2>
+<p>A Python package usually consists of several modules, where “module” is a Python program that you import to make your code work more efficiently. In this tutorial, we need the “numpy”, “matplotlib”, “jupyter”, “notebook” packages. To install them in your Python “base” environment, simply call the “Anaconda Prompt” and type</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install numpy matplotlib jupyter notebook
+</pre></div>
+</div>
+<p>If it prompts out something, just input <code class="docutils literal notranslate"><span class="pre">y</span></code> and enter.</p>
+<img alt="condaup" src="../_images/update.png" />
+</section>
+<section id="Run-Python-Code">
+<h2>Run Python Code<a class="headerlink" href="#Run-Python-Code" title="Link to this heading"></a></h2>
+<p>There are multiple ways to run python code.</p>
+<section id="Save-As-a-.py-File-(not-recommanded)">
+<h3>Save As a .py File (<strong>not</strong> recommanded)<a class="headerlink" href="#Save-As-a-.py-File-(not-recommanded)" title="Link to this heading"></a></h3>
+<p>You may save your Python code to a text file (usually end with a .py suffix), for example, copy and past</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>print(&#39;Hello, World.&#39;)
+</pre></div>
+</div>
+<p>to a file <code class="docutils literal notranslate"><span class="pre">hello.py</span></code>, then call the “Anaconda prompt” to run the code:</p>
+<img alt="hello" src="../_images/hello.png" />
+<p>As you can see this method is <strong>not</strong> interactive, the other method (Jupyter Notebook) is recommanded!</p>
+</section>
+<section id="Jupyter-Notebook-(recommanded)">
+<h3>Jupyter Notebook (recommanded)<a class="headerlink" href="#Jupyter-Notebook-(recommanded)" title="Link to this heading"></a></h3>
+<p>The Jupyter Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and more. The Python code can be saved to .ipynb format and you may use Jupyter notebook to run it interactively!</p>
+<p>For example, here we have <a class="reference internal" href="Kronig-Penney.html"><span class="doc">a Jupyter Notebook file for the Kronig-Penney model, please click here to download it.</span></a></p>
+<p>Then, in the “Anaconda prompt”, type</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>jupyter notebook
+</pre></div>
+</div>
+<p>to activate the web-based interactive notebook. <img alt="jupyter" src="../_images/jupyter.png" /></p>
+<p>In the jupyter notebook, browse and navigate the directory in which you downloaded ‘Kronig-Penney.ipynb’. <img alt="jupyternavi" src="../_images/navi.png" /></p>
+<p>Click and run Python code interactively: <img alt="jupyteruse" src="../_images/usenotebook.png" /></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="env.html" class="btn btn-neutral float-left" title="ENV: Environment Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Chats dans le bâtiment 5.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
