@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pfc-gb.html">PFC: Grain Boundary Evolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pf-elas.html">PF: Phase Precipitation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phasediag.html">PFC: Phase Diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fourier.html">Fourier Space</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Kirkendall: A PFC application</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Free-Energy">Free Energy</a><ul>
@@ -119,18 +120,18 @@ F = \int d\mathbf{x}\left[\frac{n}{2}\Lambda^0n - \frac{t}{3}n^3 + \frac{v}{4}n^
 <h3>One Mode Expansion in 2D<a class="headerlink" href="#One-Mode-Expansion-in-2D" title="Link to this heading"></a></h3>
 <p>On page 164 of <em>Nikolas Provatas &amp; Ken Elder. Phase-Field Methods in Materials Science and Engineering. (Wiley-VCH Verlag GmbH &amp; Co. KGaA, 2010). doi:10.1002/9783527631520.</em>, the approximated density in 2D case reads:</p>
 <p><span class="math">\begin{align}
-n = \bar{n} + C\left[\frac{1}{2}cos\left(\frac{2q}{\sqrt{3}}y\right)- cos\left(qx\right)cos\left(\frac{q}{\sqrt{3}}y\right)\right]
+n = \bar{n} + A\left[\frac{1}{2}cos\left(\frac{4\pi}{\sqrt{3}a}y\right)+ cos\left(\frac{2\pi}{a}x\right)cos\left(\frac{2\pi}{\sqrt{3}a}y\right)\right]
 \end{align}</span></p>
-<p>where <span class="math notranslate nohighlight">\(q=\frac{2\pi}{a}\cdot\frac{\sqrt{3}}{2}\)</span>. Not surprisingly, the density is with triangular symmetry.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<p>Not surprisingly, the density is with triangular symmetry.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">C</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mf">6.927</span>
-<span class="n">q</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="c1"># q = 2*np.pi / a * np.sqrt(3) / 2</span>
 <span class="n">dx</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span><span class="mf">7.0</span>
 <span class="n">Lx</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">a</span>
 <span class="n">Ly</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">a</span>
@@ -139,16 +140,33 @@ n = \bar{n} + C\left[\frac{1}{2}cos\left(\frac{2q}{\sqrt{3}}y\right)- cos\left(q
 <span class="n">xlst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
 <span class="n">ylst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ny</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
 <span class="p">[</span><span class="n">xmat</span><span class="p">,</span> <span class="n">ymat</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xlst</span><span class="p">,</span> <span class="n">ylst</span><span class="p">,</span><span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">C</span><span class="o">*</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">q</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">q</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">))</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">C</span><span class="o">*</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x1921f614be0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_kirkendall_2_1.png" src="../_images/PF_kirkendall_2_1.png" />
 </div>
 </div>
 </section>
 <section id="Free-Energy-per-Area">
 <h3>Free Energy per Area<a class="headerlink" href="#Free-Energy-per-Area" title="Link to this heading"></a></h3>
 <p>The free energy per area can be computed by substituting the “one-mode-expansion” density to the free energy functional, and average per area.</p>
-<p>The period along <span class="math notranslate nohighlight">\(\vec{x}\)</span> is <span class="math notranslate nohighlight">\(\frac{2\pi}{q}=\frac{2\pi\cdot 2a}{2\pi\sqrt{3}}=\frac{2a}{\sqrt{3}}\)</span>, along <span class="math notranslate nohighlight">\(\vec{y}\)</span> is <span class="math notranslate nohighlight">\(\frac{2\pi}{q/\sqrt{3}}=\frac{2\pi\cdot 2a}{2\pi \cdot 3}=\frac{2a}{3}\)</span>, the unit area is <span class="math notranslate nohighlight">\(\frac{4a^2}{3\sqrt{3}}\)</span>.</p>
+<p>The period along <span class="math notranslate nohighlight">\(\vec{x}\)</span> is <span class="math notranslate nohighlight">\(\frac{2\pi}{q}=\frac{2\pi\cdot 2a}{2\pi\sqrt{3}}=\frac{2a}{\sqrt{3}}\)</span>, along <span class="math notranslate nohighlight">\(\vec{y}\)</span> is <span class="math notranslate nohighlight">\(\frac{2\pi}{q/\sqrt{3}}=\frac{2\pi\cdot 2a}{2\pi \cdot 3}=\frac{2a}{3}\)</span>, the unit area is <span class="math notranslate nohighlight">\(\frac{4a^2}{3\sqrt{3}}\)</span>. Substitute the one mode expansion to the free energy functional, integrate over <span class="math notranslate nohighlight">\(\{x,0,\frac{2a}{\sqrt{3}}\}, \{y,0,\frac{2a}{3}\}\)</span> and devided by <span class="math notranslate nohighlight">\(\frac{4a^2}{3\sqrt{3}}\)</span> to get the free energy density of the triangular
+phase:</p>
 </section>
 </section>
 <section id="Implementation">
@@ -243,7 +261,7 @@ M_A &= MA = 1.0 \nonumber \\
 M_B &= MB = 0.1 \nonumber
 \end{align}</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
@@ -275,12 +293,12 @@ M_B &= MB = 0.1 \nonumber
     <span class="n">dynpsi</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span>
     <span class="k">return</span><span class="p">(</span><span class="n">dynpsi</span><span class="p">)</span>
 <span class="c1"># parameter list</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mf">6.927</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 <span class="n">ay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span>
 <span class="c1"># nbar = -0.1501</span>
-<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span>
+<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span>
 <span class="n">B0l</span> <span class="o">=</span> <span class="mf">0.7</span>
-<span class="n">B2l</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.8</span>
+<span class="n">B2l</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.8</span>
 <span class="n">B0x</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mf">0.6</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -296,9 +314,9 @@ M_B &= MB = 0.1 \nonumber
 <span class="n">Ny_div2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">qx</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">a</span>
 <span class="n">qy</span> <span class="o">=</span> <span class="n">qx</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">C</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">MA</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">MB</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">MA</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">MB</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">tstep</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">tdump</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">xlst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
@@ -308,7 +326,7 @@ M_B &= MB = 0.1 \nonumber
 <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
 <span class="n">psi</span><span class="p">[:,</span><span class="n">Ny_div2</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">psi</span><span class="p">[:,:</span><span class="n">Ny_div2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">nbar</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">C</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">qx</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">qy</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">nbar</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">ymat</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tstep</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">+=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="n">psi</span> <span class="o">+=</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynpsiCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -323,48 +341,48 @@ M_B &= MB = 0.1 \nonumber
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:19: RuntimeWarning: overflow encountered in power
-  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:12: RuntimeWarning: invalid value encountered in add
-  ter3 = B0x*(n+2*lapn+lap2n)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:25: RuntimeWarning: overflow encountered in square
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:25: RuntimeWarning: overflow encountered in power
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:25: RuntimeWarning: invalid value encountered in add
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:26: RuntimeWarning: overflow encountered in square
-  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:26: RuntimeWarning: overflow encountered in power
-  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:26: RuntimeWarning: invalid value encountered in add
-  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:11: RuntimeWarning: overflow encountered in square
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:11: RuntimeWarning: overflow encountered in square
   ter2 = B2l*psi**2
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:18: RuntimeWarning: overflow encountered in square
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:18: RuntimeWarning: overflow encountered in power
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:19: RuntimeWarning: overflow encountered in square
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:19: RuntimeWarning: overflow encountered in multiply
   ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:19: RuntimeWarning: invalid value encountered in add
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:19: RuntimeWarning: overflow encountered in power
   ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:19: RuntimeWarning: invalid value encountered in subtract
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:19: RuntimeWarning: invalid value encountered in add
   ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:20: RuntimeWarning: invalid value encountered in add
-  dynn = ter1 + ter2
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:25: RuntimeWarning: overflow encountered in multiply
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:19: RuntimeWarning: invalid value encountered in multiply
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:25: RuntimeWarning: overflow encountered in square
   ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:18: RuntimeWarning: overflow encountered in multiply
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:25: RuntimeWarning: invalid value encountered in subtract
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:25: RuntimeWarning: overflow encountered in power
   ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:11: RuntimeWarning: overflow encountered in multiply
-  ter2 = B2l*psi**2
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:19: RuntimeWarning: overflow encountered in multiply
-  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_15960\416033127.py:26: RuntimeWarning: overflow encountered in multiply
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:25: RuntimeWarning: invalid value encountered in multiply
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:26: RuntimeWarning: overflow encountered in square
   ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:26: RuntimeWarning: overflow encountered in multiply
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:26: RuntimeWarning: overflow encountered in power
+  ter2 = (MA+MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:18: RuntimeWarning: overflow encountered in square
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:18: RuntimeWarning: overflow encountered in power
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:19: RuntimeWarning: overflow encountered in square
+  ter2 = (MA-MB)*((w+B2l*n**2)*psi + u*psi**3 - K * lappsi)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:25: RuntimeWarning: invalid value encountered in add
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:25: RuntimeWarning: overflow encountered in multiply
+  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:18: RuntimeWarning: overflow encountered in multiply
+  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
+c:\Users\yanglin\miniconda3\envs\mge\lib\site-packages\scipy\ndimage\_filters.py:513: RuntimeWarning: overflow encountered in add
+  output += tmp
+C:\Users\yanglin\AppData\Local\Temp\ipykernel_3624\3839683843.py:5: RuntimeWarning: overflow encountered in divide
+  lap = ndimage.laplace(phi)/(dx**2)
+c:\Users\yanglin\miniconda3\envs\mge\lib\site-packages\matplotlib\image.py:463: RuntimeWarning: overflow encountered in scalar multiply
+  newmin = vmid - dv * fact
+c:\Users\yanglin\miniconda3\envs\mge\lib\site-packages\matplotlib\image.py:468: RuntimeWarning: overflow encountered in scalar multiply
+  newmax = vmid + dv * fact
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
