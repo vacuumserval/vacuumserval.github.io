@@ -10,8 +10,4 @@ Density Functional Theory
    :maxdepth: 2
    :caption: Contents:
 
-   KronigPenney
-   bandstruct
-   phonon
-   elastic
-   gibbs
+   Kronig-Penney

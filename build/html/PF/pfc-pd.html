@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFC: Phase Diagram &mdash; Cat in Bldg. 5</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+    <link rel="shortcut icon" href="../_static/icon-small.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Materials Informatics" href="../MI/index.html" />
+    <link rel="prev" title="Phase Field: Basic" href="pf-basic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Cat in Bldg. 5
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../DFT/index.html">Density Functional Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pf-basic.html">Phase Field: Basic</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PFC: Phase Diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#One-Mode-Approximation">One Mode Approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-Simplest-PFC-Model">the Simplest PFC Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-Dynamical-Equation">the Dynamical Equation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../MI/index.html">Materials Informatics</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cat in Bldg. 5</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Phase Field Method</a></li>
+      <li class="breadcrumb-item active">PFC: Phase Diagram</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/PF/pfc-pd.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="PFC:-Phase-Diagram">
+<h1>PFC: Phase Diagram<a class="headerlink" href="#PFC:-Phase-Diagram" title="Link to this heading"></a></h1>
+<section id="One-Mode-Approximation">
+<h2>One Mode Approximation<a class="headerlink" href="#One-Mode-Approximation" title="Link to this heading"></a></h2>
+<p>[1] Emdadi, A., Asle Zaeem, M. &amp; Asadi, E. Revisiting phase diagrams of two-mode phase-field crystal models. Computational Materials Science 123, 139–147 (2016).</p>
+<p>Assuming that the system is in crystalline state and the average value of the density is <span class="math notranslate nohighlight">\(\bar{n}\)</span>, then the functional form of a periodic density can be written in terms of reciprocal lattice vectors (RLVs), <span class="math notranslate nohighlight">\(\vec{k}\)</span>, and their amplitudes <span class="math notranslate nohighlight">\(A_{\vec{k}}\)</span> by: <span class="math">\begin{align}
+n_{phase} = \bar{n}+\sum_{\vec{k}}A_{\vec{k}}e^{i\vec{k}\cdot\vec{r}}+c.c.
+\end{align}</span> The dimensionless density profiles in the solid state for square, triangular, stripe lattice structures in PFC model by considering the first wavelength amplitudes are: <span class="math">\begin{align}
+n_{sq}&=\bar{n}+A\left(\cos qx+\cos qy\right); \left(q=1\right) \nonumber \\
+&=\bar{n}+A\left(\cos x+\cos y\right)\\
+n_{tri}&=\bar{n}+A\left(\cos qx \cos \frac{qy}{\sqrt{3}}+\frac{1}{2}\cos\frac{2qy}{\sqrt{3}}\right); \left(q=\frac{\sqrt{3}}{2}\right) \nonumber \\
+&= \bar{n}+A\left(\cos \frac{\sqrt{3}}{2}x \cos \frac{1}{2}y+\frac{1}{2}\cos y\right)\\
+n_{str}&=\bar{n}+A\cos qx=\bar{n}+A\cos x; \left(q=1\right)
+\end{align}</span></p>
+</section>
+<section id="the-Simplest-PFC-Model">
+<h2>the Simplest PFC Model<a class="headerlink" href="#the-Simplest-PFC-Model" title="Link to this heading"></a></h2>
+<p>Take the simplest PFC model for example,</p>
+<p><span class="math">\begin{align}
+F[n]=\int\left[\varepsilon \frac{n^2}{2}+\frac{n^4}{4}+\frac{n}{2}\left(1+\nabla^2\right)^2n\right]dx
+\end{align}</span></p>
+<p>Substitute the “one mode approximation” to the integrand (Mathematica): <img alt="gsimple" src="../_images/gsimple.png" /></p>
+<p>Integrate per period area and divided by the area to get the free energy density, minimize the free energy density in order to evaluate amplitude <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<img alt="Asimple" src="../_images/Asimple.png" />
+<p>Adopt the common tangent method to get the phase field order parameter value in equilibrium:</p>
+<img alt="csimple" src="../_images/csimple.png" />
+<p>The phase diagram can be calculated:</p>
+<img alt="pdsimple" src="../_images/pdsimple.png" />
+</section>
+<section id="the-Dynamical-Equation">
+<h2>the Dynamical Equation<a class="headerlink" href="#the-Dynamical-Equation" title="Link to this heading"></a></h2>
+<p>The conserved order parameter evolves as:</p>
+<p><span class="math">\begin{align}
+\frac{\partial n}{\partial t} &= M\nabla^2\frac{\delta F}{\delta n} \\
+&\Downarrow \nonumber \\
+\frac{\partial n}{\partial t} &= M\nabla^2\left[\varepsilon n + n^3 + (1+2\nabla^2+\nabla^4)n\right]
+\end{align}</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="k">def</span> <span class="nf">calLap1</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
+    <span class="n">phi_ipj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_ipj0=phi(i+1,j)</span>
+    <span class="n">phi_imj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_imj0=phi(i-1,j)</span>
+    <span class="n">phi_i0jp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_i0jm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi_ipjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_ipjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_imjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">phi_lap</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipj0</span><span class="o">+</span><span class="n">phi_imj0</span><span class="o">+</span><span class="n">phi_i0jp</span><span class="o">+</span><span class="n">phi_i0jm</span><span class="p">)</span><span class="o">+</span><span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipjp</span><span class="o">+</span><span class="n">phi_imjp</span><span class="o">+</span><span class="n">phi_ipjm</span><span class="o">+</span><span class="n">phi_imjm</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">phi_lap</span><span class="p">)</span>
+<span class="c1"># def calLap2(n, dx): 这个函数的稳定性很差...</span>
+<span class="c1">#     lap = ndimage.laplace(n)/(dx**2)</span>
+<span class="c1">#     return(lap)</span>
+<span class="k">def</span> <span class="nf">calDyn</span><span class="p">(</span><span class="n">epsl</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">fun</span> <span class="o">=</span> <span class="p">(</span><span class="n">epsl</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">n</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">calLap1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">dx</span><span class="p">)</span> <span class="o">+</span> <span class="n">calLap1</span><span class="p">(</span><span class="n">calLap1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">dx</span><span class="p">),</span><span class="n">dx</span><span class="p">)</span>
+    <span class="n">dyn</span> <span class="o">=</span> <span class="n">calLap1</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="n">fun</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dyn</span><span class="p">)</span>
+<span class="n">epsl</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.6</span>
+<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="mf">8.0</span> <span class="c1"># the larger, the stabler</span>
+<span class="n">Lx</span> <span class="o">=</span> <span class="n">Ly</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">a</span>
+<span class="n">Nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Lx</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
+<span class="n">Ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ly</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
+<span class="n">xlst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
+<span class="n">ylst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ny</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span>
+<span class="p">[</span><span class="n">xmat</span><span class="p">,</span> <span class="n">ymat</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xlst</span><span class="p">,</span> <span class="n">ylst</span><span class="p">,</span><span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="c1"># ntr_all = nbar + A*(np.cos(np.sqrt(3)/2*xmat)*np.cos(0.5*ymat)+0.5*np.cos(ymat))</span>
+<span class="n">nlq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">nbar</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span><span class="n">Ny</span><span class="p">))</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">nlq</span>
+<span class="n">nstep</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">ndump</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="k">for</span> <span class="n">istep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nstep</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="n">dt</span><span class="o">*</span><span class="n">calDyn</span><span class="p">(</span><span class="n">epsl</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">istep</span><span class="o">%</span><span class="k">ndump</span> == 0):
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_0.png" src="../_images/PF_pfc-pd_1_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_1.png" src="../_images/PF_pfc-pd_1_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_2.png" src="../_images/PF_pfc-pd_1_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_3.png" src="../_images/PF_pfc-pd_1_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_4.png" src="../_images/PF_pfc-pd_1_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_5.png" src="../_images/PF_pfc-pd_1_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_6.png" src="../_images/PF_pfc-pd_1_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_7.png" src="../_images/PF_pfc-pd_1_7.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_8.png" src="../_images/PF_pfc-pd_1_8.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/PF_pfc-pd_1_9.png" src="../_images/PF_pfc-pd_1_9.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pf-basic.html" class="btn btn-neutral float-left" title="Phase Field: Basic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../MI/index.html" class="btn btn-neutral float-right" title="Materials Informatics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Chats dans le bâtiment 5.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

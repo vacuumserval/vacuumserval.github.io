@@ -10,8 +10,5 @@ Phase Field Method
    :maxdepth: 1
    :caption: Contents:
 
-   pfc-gb
-   pf-elas
-   phasediag
-   fourier
-   kirkendall
+   pf-basic
+   pfc-pd
