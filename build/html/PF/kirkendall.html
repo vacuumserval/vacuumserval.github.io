@@ -25,7 +25,9 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Materials Informatics" href="../MI/index.html" />
+    <link rel="prev" title="PFC: Phase Diagram" href="pfc-pd.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,9 +50,26 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../DFT/index.html">Density Functional Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Phase Field Method</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Phase Field Method</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pf-basic.html">Phase Field: Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfc-pd.html">PFC: Phase Diagram</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Kirkendall: A PFC application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Free-Energy">Free Energy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#One-Mode-Expansion-in-2D">One Mode Expansion in 2D</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Free-Energy-per-Area">Free Energy per Area</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-Kirkendall-Dynamics">the Kirkendall Dynamics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#3.1.-Single-crystal:-vacancy-diffusion">3.1. <em>Single crystal: vacancy diffusion</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../MI/index.html">Materials Informatics</a></li>
 </ul>
 
@@ -68,6 +87,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Phase Field Method</a></li>
       <li class="breadcrumb-item active">Kirkendall: A PFC application</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/PF/kirkendall.ipynb.txt" rel="nofollow"> View page source</a>
@@ -87,7 +107,7 @@
 <p><span class="math">\begin{align}
 F = \int d\mathbf{x}\left[\frac{n}{2}\Lambda^0n - \frac{t}{3}n^3 + \frac{v}{4}n^4 + \gamma\psi + \frac{\omega}{2}\psi^2 + \frac{\mu}{4}\psi^4 + \frac{K}{2}\lvert\vec{\nabla\psi}\rvert^2\right]
 \end{align}</span></p>
-<p>where</p>
+<p>where <span class="math notranslate nohighlight">\(n=n_A+n_B\)</span>, <span class="math notranslate nohighlight">\(\psi=n_A-n_B\)</span>, and</p>
 <p><span class="math">\begin{align}
 \Lambda^0 = \left(B_0^l-B_0^x\right) + B_2^l\psi^2 + B_0^x\left(1+\nabla^2\right)^2
 \end{align}</span></p>
@@ -146,59 +166,68 @@ n = \bar{n} + A\left[\frac{1}{2}cos\left(y\right)+ cos\left(\frac{\sqrt{3}}{2}x\
 </section>
 <section id="the-Kirkendall-Dynamics">
 <h2>the Kirkendall Dynamics<a class="headerlink" href="#the-Kirkendall-Dynamics" title="Link to this heading"></a></h2>
-<p>In Ref. [1]’s Eq. (3~4):</p>
+<p>Order parameters <span class="math notranslate nohighlight">\(n=n_A+n_B\)</span> and <span class="math notranslate nohighlight">\(\psi=n_A-n_B\)</span> are all conserved:</p>
 <p><span class="math">\begin{align}
-\frac{\partial n_A}{\partial t} &= M_A\nabla^2\left\{\Lambda^0n-tn^2+vn^3+\left[w+B_2^ln^2\right]\psi+u\psi^3-K\nabla^2\psi\right\} \\
-\frac{\partial n_B}{\partial t} &= M_B\nabla^2\left\{\Lambda^0n-tn^2+vn^3-\left[w+B_2^ln^2\right]\psi-u\psi^3+K\nabla^2\psi\right\}
+\frac{\partial n_A}{\partial t} &= M_A\nabla^2\frac{\delta F}{\delta n_A} \\
+\frac{\partial n_B}{\partial t} &= M_B\nabla^2\frac{\delta F}{\delta n_B}
 \end{align}</span></p>
-<p>since <span class="math notranslate nohighlight">\(n=n_A+n_B\)</span> and <span class="math notranslate nohighlight">\(\psi=n_A-n_B\)</span>:</p>
 <p><span class="math">\begin{align}
-\frac{\partial n}{\partial t} &= (M_A+M_B)\nabla^2\left(\Lambda^0n-tn^2+vn^3\right) \nonumber  \\
-&+ (M_A-M_B)\left[\left(w+B_2^ln^2\right)\psi+u\psi^3-K\nabla^2\psi\right] \\
-\frac{\partial \psi}{\partial t} &= (M_A-M_B)\nabla^2\left(\Lambda^0n-tn^2+vn^3\right) \nonumber  \\
-&+ (M_A+M_B)\left[\left(w+B_2^ln^2\right)\psi+u\psi^3-K\nabla^2\psi\right]
-\end{align}</span></p>
-<p>And the parameters are</p>
-<p><span class="math">\begin{align}
-a & = a = 6.927 \nonumber \\
-B_0^l &= B0l = 0.7 \nonumber \\
-B_2^l &= B2l = -1.8 \nonumber \\
-B_0^x &= B0x = 1.0 \nonumber \\
-t &= t = 0.6 \nonumber \\
-v &= v = 1.0 \nonumber \\
-K &= K = 4.0 \nonumber \\
-w &= w = 1.0 \nonumber \\
-u &= u = 4.0 \nonumber \\
-n_{liquid} &= nliq = -0.2517 \nonumber \\
-n_{solid} &= nsld = -0.1503 \nonumber \\
-\Delta x &= dx = a/7 \nonumber
-\end{align}</span></p>
+F &= \int d\mathbf{x}\left[\frac{n}{2} \Lambda^0n - \frac{t}{3}n^3 + \frac{v}{4}n^4 + \gamma\psi + \frac{\omega}{2}\psi^2 + \frac{\mu}{4}\psi^4 + \frac{K}{2}\lvert\vec{\nabla\psi}\rvert^2\right]
+\end{align}</span> where <span class="math notranslate nohighlight">\(\Lambda^0 = \left(B_0^l-B_0^x\right) + B_2^l\psi^2 + B_0^x\left(1+\nabla^2\right)^2\)</span>, such that:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>变分项</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\frac{\delta }{\delta n_A}=\frac{\delta n}{\delta n_A}\frac{\delta }{\delta n}+\frac{\delta \psi}{\delta n_A}\frac{\delta }{\delta \psi}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\frac{\delta }{\delta n_B}=\frac{\delta n}{\delta n_B}\frac{\delta }{\delta n}+\frac{\delta \psi}{\delta n_B}\frac{\delta }{\delta \psi}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{n}{2}\left(B_0^l-B_0^x\right)n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((B_0^l-B_0^x)n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((B_0^l-B_0^x)n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\frac{n}{2}B_2^l\psi^2n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(B_2^l(n\psi^2+n^2\psi)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(B_2^l(n\psi^2-n^2\psi)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{n}{2}B_0^x\left(1+\nabla^2\right)^2n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(B_0^x\left(1+\nabla^2\right)^2n\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(B_0^x\left(1+\nabla^2\right)^2n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(- \frac{t}{3}n^3 + \frac{v}{4}n^4\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-tn^2+vn^3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-tn^2+vn^3\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\gamma\psi + \frac{\omega}{2}\psi^2 + \frac{\mu}{4}\psi^4\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\gamma+\omega\psi+\mu\psi^3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\gamma-\omega\psi-\mu\psi^3\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\frac{K}{2}\lvert\vec{\nabla\psi}\rvert^2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(K\nabla^2\psi\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-K\nabla^2\psi\)</span></p></td>
+</tr>
+</tbody>
+</table>
 <section id="3.1.-Single-crystal:-vacancy-diffusion">
 <h3>3.1. <em>Single crystal: vacancy diffusion</em><a class="headerlink" href="#3.1.-Single-crystal:-vacancy-diffusion" title="Link to this heading"></a></h3>
 <p>We first reproduce the Sec. 3.1, “a single crystal that contains an initial concentration inhomogeneity in the absence of grain boundaries, surfaces or other natural sources or sinks of vacancies”. Here</p>
 <p><span class="math">\begin{align}
-L_x & = Lx = a \nonumber \\
-L_y & = Ly = 161 a_y \nonumber \\
 \psi & = psi =
 \begin{cases}
 0.1\; for\; y=[-L_y/2,0] \nonumber \\
 -0.1\; for\; y=[0, L_y/2] \nonumber \\
 \end{cases}
 \nonumber \\
-n & n = \bar{n} + C\left[cos(2q_yy)/2-cos(q_xx)cos(q_yy)\right] \nonumber \\
+n &= \bar{n} + C\left[\frac{1}{2}cos(y)+cos(\frac{\sqrt{3}}{2}x)cos(\frac{1}{2}y)\right] \nonumber \\
 \bar{n} &= nbar = -0.1501 \nonumber \\
-a_y &= ay = \sqrt{3}a \nonumber \\
-q_x &= qx = \frac{2\pi}{a} \nonumber \\
-q_y &= qy = \frac{q_x}{\sqrt{3}} \nonumber \\
 M_A &= MA = 1.0 \nonumber \\
 M_B &= MB = 0.1 \nonumber
 \end{align}</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="k">def</span> <span class="nf">lapCalc</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">dx</span><span class="p">):</span>
     <span class="n">phi_ipj0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># phi_ipj0=phi(i+1,j)</span>
@@ -211,35 +240,44 @@ M_B &= MB = 0.1 \nonumber
     <span class="n">phi_imjm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">phi_lap</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipj0</span><span class="o">+</span><span class="n">phi_imj0</span><span class="o">+</span><span class="n">phi_i0jp</span><span class="o">+</span><span class="n">phi_i0jm</span><span class="p">)</span><span class="o">+</span><span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">phi_ipjp</span><span class="o">+</span><span class="n">phi_imjp</span><span class="o">+</span><span class="n">phi_ipjm</span><span class="o">+</span><span class="n">phi_imjm</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
     <span class="k">return</span><span class="p">(</span><span class="n">phi_lap</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">t1Calc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="n">B0l</span><span class="o">-</span><span class="n">B0x</span><span class="p">)</span><span class="o">*</span><span class="n">n</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">t2ACalc</span><span class="p">(</span><span class="n">B2l</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">psi</span><span class="p">):</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">B2l</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">psi</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">t2BCalc</span><span class="p">(</span><span class="n">B2l</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">psi</span><span class="p">):</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">B2l</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">psi</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">t3Calc</span><span class="p">(</span><span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="n">lapn</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
     <span class="n">lap2n</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">lapn</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">B0l</span><span class="o">-</span><span class="n">B0x</span><span class="p">)</span><span class="o">*</span><span class="n">n</span>
-    <span class="n">ter2</span> <span class="o">=</span> <span class="n">B2l</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span>
-    <span class="n">ter3</span> <span class="o">=</span> <span class="n">B0x</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">lapn</span><span class="o">+</span><span class="n">lap2n</span><span class="p">)</span>
-    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span> <span class="o">+</span> <span class="n">ter3</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">lmdn</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">dynnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">lappsi</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">+</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">lmdn</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter2</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">-</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">((</span><span class="n">w</span><span class="o">+</span><span class="n">B2l</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">psi</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter3</span> <span class="o">=</span> <span class="p">(</span><span class="n">MB</span><span class="o">-</span><span class="n">MA</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="n">lappsi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">dynn</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span> <span class="o">+</span> <span class="n">ter3</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">dynn</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">dynpsiCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="n">lmdn</span> <span class="o">=</span> <span class="n">lmdnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">lappsi</span> <span class="o">=</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter1</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">-</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">lmdn</span><span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter2</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">+</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">((</span><span class="n">w</span><span class="o">+</span><span class="n">B2l</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">psi</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">ter3</span> <span class="o">=</span> <span class="p">(</span><span class="n">MA</span><span class="o">-</span><span class="n">MB</span><span class="p">)</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="n">lappsi</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
-    <span class="n">dynpsi</span> <span class="o">=</span> <span class="n">ter1</span> <span class="o">+</span> <span class="n">ter2</span> <span class="o">+</span> <span class="n">ter3</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">dynpsi</span><span class="p">)</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">B0x</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">lapn</span> <span class="o">+</span> <span class="n">lap2n</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t3</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">t4Calc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">t4</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">3</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t4</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">t56ABCalc</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">psi</span><span class="p">):</span>
+    <span class="n">t56</span> <span class="o">=</span> <span class="n">g</span> <span class="o">+</span> <span class="n">w</span><span class="o">*</span><span class="n">psi</span> <span class="o">+</span> <span class="n">u</span><span class="o">*</span><span class="n">psi</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">K</span><span class="o">*</span><span class="n">lapCalc</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span><span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">t56</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dynACalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">t1Calc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">t2ACalc</span><span class="p">(</span><span class="n">B2l</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">t3Calc</span><span class="p">(</span><span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">t4</span> <span class="o">=</span> <span class="n">t4Calc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">t56</span> <span class="o">=</span> <span class="n">t56ABCalc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">dynA</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">t1</span><span class="o">+</span><span class="n">t2</span><span class="o">+</span><span class="n">t3</span><span class="o">+</span><span class="n">t4</span><span class="o">+</span><span class="n">t56</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dynA</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dynBCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">t1Calc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">t2BCalc</span><span class="p">(</span><span class="n">B2l</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">t3Calc</span><span class="p">(</span><span class="n">B0x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">t4</span> <span class="o">=</span> <span class="n">t4Calc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">t56</span> <span class="o">=</span> <span class="n">t56ABCalc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">)</span>
+    <span class="n">dynB</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">lapCalc</span><span class="p">(</span><span class="n">t1</span><span class="o">+</span><span class="n">t2</span><span class="o">+</span><span class="n">t3</span><span class="o">+</span><span class="n">t4</span><span class="o">-</span><span class="n">t56</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">dynB</span><span class="p">)</span>
 <span class="c1"># parameter list</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-<span class="n">ay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">a</span>
-<span class="c1"># nbar = -0.1501</span>
-<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.16</span>
+<span class="n">nbar</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.15</span>
 <span class="n">B0l</span> <span class="o">=</span> <span class="mf">0.7</span>
 <span class="n">B2l</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.8</span>
 <span class="n">B0x</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -248,20 +286,18 @@ M_B &= MB = 0.1 \nonumber
 <span class="n">K</span> <span class="o">=</span> <span class="mf">4.0</span>
 <span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">u</span> <span class="o">=</span> <span class="mf">4.0</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.000005</span>
-<span class="n">dx</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="mi">8</span>
-<span class="n">Lx</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">a</span>
-<span class="n">Ly</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">a</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.0000001</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">8</span>
+<span class="n">Lx</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">Ly</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 <span class="n">Nx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Lx</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
 <span class="n">Ny</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ly</span><span class="o">/</span><span class="n">dx</span><span class="p">)</span>
 <span class="n">Ny_div2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">qx</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">a</span>
-<span class="n">qy</span> <span class="o">=</span> <span class="n">qx</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">C</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">MA</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">MB</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">tstep</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">tdump</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">MB</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">tstep</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">tdump</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">xlst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
 <span class="n">ylst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ny</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
 <span class="p">[</span><span class="n">xmat</span><span class="p">,</span> <span class="n">ymat</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xlst</span><span class="p">,</span> <span class="n">ylst</span><span class="p">,</span><span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
@@ -269,16 +305,18 @@ M_B &= MB = 0.1 \nonumber
 <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
 <span class="n">psi</span><span class="p">[:,</span><span class="n">Ny_div2</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">psi</span><span class="p">[:,:</span><span class="n">Ny_div2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">n</span> <span class="o">=</span> <span class="n">nbar</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">xmat</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">ymat</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ymat</span><span class="p">))</span>
-<span class="c1"># n = np.random.normal(nbar, 1e-2, (Nx,Ny))</span>
+<span class="c1"># n = nbar + C*(np.cos(np.sqrt(3)/2*xmat)*np.cos(0.5*ymat)+0.5*np.cos(ymat))</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">nbar</span><span class="p">,</span> <span class="mf">5e-2</span><span class="p">,</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span><span class="n">Ny</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tstep</span><span class="p">):</span>
-    <span class="n">n0</span><span class="o">=</span><span class="n">n</span>
-    <span class="n">psi0</span><span class="o">=</span><span class="n">psi</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynnCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi0</span><span class="p">,</span> <span class="n">n0</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span><span class="n">Ny</span><span class="p">))</span>
-    <span class="n">psi</span> <span class="o">=</span> <span class="n">psi</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynpsiCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi0</span><span class="p">,</span> <span class="n">n0</span><span class="p">)</span>
+    <span class="n">nA</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="n">psi</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+    <span class="n">nB</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">psi</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+    <span class="n">nA</span> <span class="o">=</span> <span class="n">nA</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynACalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MA</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">nB</span> <span class="o">=</span> <span class="n">nB</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">dynBCalc</span><span class="p">(</span><span class="n">B0l</span><span class="p">,</span> <span class="n">B2l</span><span class="p">,</span> <span class="n">B0x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">MB</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">psi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">nA</span> <span class="o">+</span> <span class="n">nB</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">nA</span> <span class="o">-</span> <span class="n">nB</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">%</span><span class="k">tdump</span> == 0):
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">nA</span><span class="p">)</span>
         <span class="c1"># plt.imshow(n[:,Ny_div2-160:Ny_div2+160]) # 样品很长，只展示中间320个单位长度的信息</span>
 </pre></div>
 </div>
@@ -287,1131 +325,70 @@ M_B &= MB = 0.1 \nonumber
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:19: RuntimeWarning: overflow encountered in square
-  ter2 = B2l*psi**2*n
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:19: RuntimeWarning: overflow encountered in multiply
-  ter2 = B2l*psi**2*n
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:26: RuntimeWarning: overflow encountered in square
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:26: RuntimeWarning: overflow encountered in multiply
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:26: RuntimeWarning: invalid value encountered in subtract
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:26: RuntimeWarning: overflow encountered in power
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:26: RuntimeWarning: invalid value encountered in add
-  ter1 = (MA+MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:27: RuntimeWarning: overflow encountered in square
-  ter2 = (MA-MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:27: RuntimeWarning: overflow encountered in multiply
-  ter2 = (MA-MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:27: RuntimeWarning: overflow encountered in power
-  ter2 = (MA-MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:27: RuntimeWarning: invalid value encountered in add
-  ter2 = (MA-MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:34: RuntimeWarning: overflow encountered in square
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:34: RuntimeWarning: overflow encountered in multiply
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:34: RuntimeWarning: invalid value encountered in subtract
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:34: RuntimeWarning: overflow encountered in power
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:34: RuntimeWarning: invalid value encountered in add
-  ter1 = (MA-MB)*lapCalc(lmdn-t*n**2+v*n**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:35: RuntimeWarning: overflow encountered in square
-  ter2 = (MA+MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:35: RuntimeWarning: overflow encountered in multiply
-  ter2 = (MA+MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:35: RuntimeWarning: overflow encountered in power
-  ter2 = (MA+MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:35: RuntimeWarning: invalid value encountered in add
-  ter2 = (MA+MB)*lapCalc((w+B2l*n**2)*psi + u*psi**3, dx)
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-0.7853981633974483
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_3.png" src="../_images/PF_kirkendall_8_3.png" />
+<img alt="../_images/PF_kirkendall_7_0.png" src="../_images/PF_kirkendall_7_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_4.png" src="../_images/PF_kirkendall_8_4.png" />
+<img alt="../_images/PF_kirkendall_7_1.png" src="../_images/PF_kirkendall_7_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_5.png" src="../_images/PF_kirkendall_8_5.png" />
+<img alt="../_images/PF_kirkendall_7_2.png" src="../_images/PF_kirkendall_7_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_6.png" src="../_images/PF_kirkendall_8_6.png" />
+<img alt="../_images/PF_kirkendall_7_3.png" src="../_images/PF_kirkendall_7_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_7.png" src="../_images/PF_kirkendall_8_7.png" />
+<img alt="../_images/PF_kirkendall_7_4.png" src="../_images/PF_kirkendall_7_4.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_8.png" src="../_images/PF_kirkendall_8_8.png" />
+<img alt="../_images/PF_kirkendall_7_5.png" src="../_images/PF_kirkendall_7_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_9.png" src="../_images/PF_kirkendall_8_9.png" />
+<img alt="../_images/PF_kirkendall_7_6.png" src="../_images/PF_kirkendall_7_6.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_10.png" src="../_images/PF_kirkendall_8_10.png" />
+<img alt="../_images/PF_kirkendall_7_7.png" src="../_images/PF_kirkendall_7_7.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_11.png" src="../_images/PF_kirkendall_8_11.png" />
+<img alt="../_images/PF_kirkendall_7_8.png" src="../_images/PF_kirkendall_7_8.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/PF_kirkendall_8_12.png" src="../_images/PF_kirkendall_8_12.png" />
+<img alt="../_images/PF_kirkendall_7_9.png" src="../_images/PF_kirkendall_7_9.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1429,7 +406,10 @@ C:\Users\yanglin\AppData\Local\Temp\ipykernel_10300\3895784130.py:35: RuntimeWar
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfc-pd.html" class="btn btn-neutral float-left" title="PFC: Phase Diagram" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../MI/index.html" class="btn btn-neutral float-right" title="Materials Informatics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

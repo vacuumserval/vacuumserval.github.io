@@ -12,3 +12,4 @@ Phase Field Method
 
    pf-basic
    pfc-pd
+   kirkendall

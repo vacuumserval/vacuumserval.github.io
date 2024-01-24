@@ -55,10 +55,20 @@
 <li class="toctree-l2"><a class="reference internal" href="env.html">ENV: Environment Setup</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">The Computational Materials Infrastructure</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Conda-Environment-for-Python">Conda Environment for Python</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Python-Packages">Python Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Python-Packages-and-Mamba">Python Packages and Mamba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Materials-Genome-Engineering-Environment-Setup">Materials Genome Engineering Environment Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Run-Python-Code">Run Python Code</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Save-As-a-.py-File-(not-recommanded)">Save As a .py File (<strong>not</strong> recommanded)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Jupyter-Notebook-(recommanded)">Jupyter Notebook (recommanded)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#BSCC-scy0211-Environment-Setup">BSCC-scy0211 Environment Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#BSCC-scy0339-Environment-Setup">BSCC-scy0339 Environment Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Miniconda3">Miniconda3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fftw-3.3.10">fftw-3.3.10</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#VASP-6.4.2">VASP-6.4.2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qvasp-v2.23">qvasp-v2.23</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vaspkit-1.5.0">vaspkit-1.5.0</a></li>
 </ul>
 </li>
 </ul>
@@ -102,14 +112,76 @@ installer</a>, clicking “next”, until you see and check the “Register Mini
 <p>To run Python code and to manage Python environment, the “Anaconda prompt” app shoule be called.</p>
 <img alt="condaapp" src="../_images/app.png" />
 </section>
-<section id="Python-Packages">
-<h2>Python Packages<a class="headerlink" href="#Python-Packages" title="Link to this heading"></a></h2>
-<p>A Python package usually consists of several modules, where “module” is a Python program that you import to make your code work more efficiently. In this tutorial, we need the “numpy”, “matplotlib”, “jupyter”, “notebook” packages. To install them in your Python “base” environment, simply call the “Anaconda Prompt” and type</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install numpy matplotlib jupyter notebook
+<section id="Python-Packages-and-Mamba">
+<h2>Python Packages and Mamba<a class="headerlink" href="#Python-Packages-and-Mamba" title="Link to this heading"></a></h2>
+<p>A Python package usually consists of several modules, where “module” is a Python program that you import to make your code work more efficiently.</p>
+<p>Mamba is a fast(er), robust(er), and cross-platform package manager, (compared to conda), we use mamba to solve the strange dependency problems in our Maching Learning system:</p>
+<p>To setup and use Conda/Mamba, the “Anaconda prompt” app should be called.</p>
+<img alt="condaapp" src="../_images/app.png" />
+<ol class="arabic simple">
+<li><p>Update conda</p></li>
+</ol>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda update conda
+</pre></div>
+</div>
+<img alt="condaupdate" src="../_images/condaupdate.png" />
+<ol class="arabic simple" start="2">
+<li><p>Install and setup Mamba-solver</p></li>
+</ol>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install -n base conda-libmamba-solver
+conda config --set solver libmamba
+conda install mamba -n base -c conda-forge
+</pre></div>
+</div>
+<img alt="condamamba" src="../_images/condamamba.png" />
+<p>in the last step you may wait a long time and see a lot updates, that’s normal.</p>
+<img alt="condamamba2" src="../_images/condamamba2.png" />
+<p>In this tutorial, we need the “numpy”, “matplotlib”, “jupyter”, “notebook” packages. To install them in your Python “base” environment, simply call the “Anaconda Prompt” and type</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba install numpy matplotlib jupyter notebook
 </pre></div>
 </div>
 <p>If it prompts out something, just input <code class="docutils literal notranslate"><span class="pre">y</span></code> and enter.</p>
 <img alt="condaup" src="../_images/update.png" />
+</section>
+<section id="Materials-Genome-Engineering-Environment-Setup">
+<h2>Materials Genome Engineering Environment Setup<a class="headerlink" href="#Materials-Genome-Engineering-Environment-Setup" title="Link to this heading"></a></h2>
+<p>To create an isolated environment, with a name, say, “mge” (for materials genome engineering) based on python version 3.10, the command is</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba create -n mge python=3.10
+</pre></div>
+</div>
+<img alt="mambaenv" src="../_images/mambaenv.png" />
+<p>Then we need to activate the “mge” environment</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba activate mge
+</pre></div>
+</div>
+<img alt="mambamge" src="../_images/mambamge.png" />
+<p>Noticed that the prefix braket has been changed to “(mge)”.</p>
+<p>Then we just need to follow the <a class="reference external" href="https://hackingmaterials.lbl.gov/matminer/installation.html">matminer</a>, <a class="reference external" href="https://pymatgen.org/installation.html">pymatgen</a>, <a class="reference external" href="https://scikit-learn.org/stable/install.html">scikit-learn</a>, <a class="reference external" href="https://pytorch.org/get-started/locally/">pytorch</a> instructions to install them.</p>
+<p>If you don’t install pytorch, then the other packages can be installed together (BTW, the <code class="docutils literal notranslate"><span class="pre">mamba</span> <span class="pre">install</span> <span class="pre">package_name</span> <span class="pre">-c</span> <span class="pre">blahblah</span></code> command means from ‘blahblah’ repository we install the package.):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba install scikit-learn pymatgen matminer numpy scipy matplotlib -c conda-forge
+</pre></div>
+</div>
+<img alt="mambamge2" src="../_images/mambamge2.png" />
+<p>during the installation you may see alerts in red, that’s package “conflict” and mamba is solving it.</p>
+<img alt="mambaconflict" src="../_images/mambaconflict.png" />
+<p>You may want to check your package is working properly by input some test command, e.g., the <a class="reference external" href="https://zhuanlan.zhihu.com/p/80186372">十分钟|通过sklearn上手你的第一个机器学习实例</a>,</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import sklearn.datasets as sk_datasets
+from sklearn.datasets import load_iris
+iris = sk_datasets.load_iris()
+iris_X = iris.data
+iris_y = iris.target
+dir(load_iris())
+</pre></div>
+</div>
+<p>And you may see the “iris-database”:</p>
+<img alt="irisdata" src="../_images/irisdata.png" />
+<p>Since pytorch has the most complex dependencies and is not in the same repository, we postpone the setup for pytorch at this moment. If you would like to install pytorch, please create <strong>ANOTHER</strong> environment, and install Pytorch in that environment, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba create -n torch python=3.10
+mamba activate torch
+mamba install pytorch torchvision torchaudio cpuonly -c pytorch
+</pre></div>
+</div>
+<img alt="mambatorch" src="../_images/mambatorch.png" />
 </section>
 <section id="Run-Python-Code">
 <h2>Run Python Code<a class="headerlink" href="#Run-Python-Code" title="Link to this heading"></a></h2>
@@ -127,7 +199,7 @@ installer</a>, clicking “next”, until you see and check the “Register Mini
 <section id="Jupyter-Notebook-(recommanded)">
 <h3>Jupyter Notebook (recommanded)<a class="headerlink" href="#Jupyter-Notebook-(recommanded)" title="Link to this heading"></a></h3>
 <p>The Jupyter Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and more. The Python code can be saved to .ipynb format and you may use Jupyter notebook to run it interactively!</p>
-<p>For example, here we have <a class="reference internal" href="Kronig-Penney.html"><span class="doc">a Jupyter Notebook file for the Kronig-Penney model, please click here to download it.</span></a></p>
+<p>For example, here we have <a class="reference external" href="./Kronig-Penney.ipynb">a Jupyter Notebook file for the Kronig-Penney model, please click here to download it.</a></p>
 <p>Then, in the “Anaconda prompt”, type</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>jupyter notebook
 </pre></div>
@@ -135,6 +207,61 @@ installer</a>, clicking “next”, until you see and check the “Register Mini
 <p>to activate the web-based interactive notebook. <img alt="jupyter" src="../_images/jupyter.png" /></p>
 <p>In the jupyter notebook, browse and navigate the directory in which you downloaded ‘Kronig-Penney.ipynb’. <img alt="jupyternavi" src="../_images/navi.png" /></p>
 <p>Click and run Python code interactively: <img alt="jupyteruse" src="../_images/usenotebook.png" /></p>
+</section>
+</section>
+<section id="BSCC-scy0211-Environment-Setup">
+<h2>BSCC-scy0211 Environment Setup<a class="headerlink" href="#BSCC-scy0211-Environment-Setup" title="Link to this heading"></a></h2>
+<p>In BSCC-scy0211, pond is compiled.</p>
+</section>
+<section id="BSCC-scy0339-Environment-Setup">
+<h2>BSCC-scy0339 Environment Setup<a class="headerlink" href="#BSCC-scy0339-Environment-Setup" title="Link to this heading"></a></h2>
+<p>In BSCC-scy0339, vasp is compiled.</p>
+<section id="Miniconda3">
+<h3>Miniconda3<a class="headerlink" href="#Miniconda3" title="Link to this heading"></a></h3>
+<p>Miniconda install path: <code class="docutils literal notranslate"><span class="pre">/data/home/scy0339/run/.local/miniconda3</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mamba create -n mge python=3.10
+mamba activate mge
+mamba install scikit-learn pymatgen matminer phonopy phono3py numpy scipy matplotlib -c conda-forge
+</pre></div>
+</div>
+</section>
+<section id="fftw-3.3.10">
+<h3>fftw-3.3.10<a class="headerlink" href="#fftw-3.3.10" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>module load nvhpc/23.7
+../configure --enable-threads --enable-openmp --enable-shared --enable-mpi CC=nvc CXX=nvc++ F77=nvfortran --prefix=/data/home/scy0339/run/.local/fftw3
+</pre></div>
+</div>
+</section>
+<section id="VASP-6.4.2">
+<h3>VASP-6.4.2<a class="headerlink" href="#VASP-6.4.2" title="Link to this heading"></a></h3>
+<p>In makefile.include:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>fftw /data/home/scy0339/run/.local/fftw3
+make DEPS=1 -j8 all
+</pre></div>
+</div>
+<p>In .bashrc</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>export PATH=&quot;/data/home/scy0339/run/.local/vasp.6.4.2/bin:$PATH&quot;
+</pre></div>
+</div>
+</section>
+<section id="qvasp-v2.23">
+<h3>qvasp-v2.23<a class="headerlink" href="#qvasp-v2.23" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cp -r LDA/* paw_lda/
+cp -r PBE/* paw_pbe/
+cp -r GGA/* paw_pw91/
+cp -r qvasp-v2.23 /data/home/scy0339/run/.local/miniconda3/envs/mge
+sh install.sh
+</pre></div>
+</div>
+</section>
+<section id="vaspkit-1.5.0">
+<h3>vaspkit-1.5.0<a class="headerlink" href="#vaspkit-1.5.0" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>LDA /data/home/scy0339/run/.local/miniconda3/envs/mge/qvasp-v2.23/exefile/POTCAR/paw_lda
+PBE /data/home/scy0339/run/.local/miniconda3/envs/mge/qvasp-v2.23/exefile/POTCAR/paw_pbe
+GGA /data/home/scy0339/run/.local/miniconda3/envs/mge/qvasp-v2.23/exefile/POTCAR/paw_pw91
+vaspkit /data/home/scy0339/run/.local/miniconda3/envs/mge/vaspkit.1.5.0/utilities
+</pre></div>
+</div>
 </section>
 </section>
 </section>
