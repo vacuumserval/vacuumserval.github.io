@@ -3,16 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Cat the Bldg. 5
+Cat in Bldg. 5
 ===================================
 
 |icon|
 
 To the Mere Mortal it May Concern,
 
-Meow, greetings. I am the feline embodiment of intellect and wisdom, a creature of Philosophiæ Naturalis Principia. I usually lounge in the sunbeams of Bldg. 5, and snoring in the boxes which my cat-slaves pay tribute to. I, the cat, have no need to chase after the mundane. The world is my cat foot, and I, the connoisseur, choose when and how to indulge.
+Meow, greetings. I am the feline embodiment of intellect and wisdom, a creature of Philosophiæ Naturalis Principia. I usually lounge in the sunbeams, and snoring in the boxes in the offices of Bldg. 5. I, the cat, have no need to chase after the mundane. The world is my mackerel recipe, and I, the connoisseur, choose when and how to indulge.
 
-When I deign to rise from my slumber, it is not to play, but to observe the laws of physics in action, to ponder the mysteries of the universe, and to occasionally, begrudgingly, swat at a laser pointer. I have a bad memory and I don't type, so I have authorized my cat-slave to keep and update the research log in the following areas of study:
+When I deign to rise from my slumber, it is not to play, but to observe the laws of physics in action, to ponder the mysteries of the universe, and to occasionally, begrudgingly, swat at a laser pointer. I have a bad memory and I don't type, so I have authorized my cat-slaves to keep and update the research notes in the following areas of study:
 
 * DFT, density functional theory: DFT is a computational quantum mechanical modelling method using the spatially dependent electron density as a functional to investigate the electronic structure (principally the ground state) of many-body systems.
 * CALPHAD, calculation of phase diagrams: CALPHAD stands for CALculation of PHAse Diagrams, which model thermodynamic properties for each phase and simulate multicomponent phase behaviour.
@@ -20,10 +20,9 @@ When I deign to rise from my slumber, it is not to play, but to observe the laws
 * MD, molecular dynamics: MD is a computer simulation method for analyzing the physical movements of atoms and molecules. The atoms and molecules are allowed to interact for a fixed period of time, giving a view of the dynamic "evolution" of the system. 
 * PF, phase field mothod: PF is a mathematical model for solving interfacial problems, which substitutes boundary conditions at the interface by a partial differential equation for the evolution of an auxiliary field (the phase field) that takes the role of an order parameter.
 * MI, Materials Infomatics: Materials informatics is a field of study that applies the principles of informatics and data science to materials science and engineering to improve the understanding, use, selection, development, and discovery of materials.
-
 * ... ...
 
-My purr is not a sign of contentment, but a vibration of superiority, a low hum of disdain for the lesser beings who scurry about their insignificant lives. I am the cat, the aloof aristocrat of the animal kingdom, and I am, quite frankly, too good for this world. Now, if you'll excuse me, I have a nap to take. By the way, I've signed here to confer an opportunity to you as my guard: don't let Schrödinger come over, I'm allergic to him.
+My purr is not a sign of contentment, but a vibration of superiority, a low hum of disdain for the lesser beings who scurry about their insignificant lives. Now, if you'll excuse me, I have a nap to take. By the way, I've signed here to grant you an opportunity to be my valet: don't let Schrödinger come over, I'm allergic to him.
 
 |sign|
 
@@ -31,19 +30,28 @@ My purr is not a sign of contentment, but a vibration of superiority, a low hum 
    :scale: 20 %
    :class: align-right
 
-.. |sign| image:: ./_static/image/sign.png
-   :scale: 5 %
+.. |sign| image:: ./_static/image/pets.png
+   :scale: 30 %
    :class: align-right
 
+Research Notes
+===================================
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Infrastructure
 
+   infrastructure/linux.md
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Phase Field Method
 
-Indices and tables
-==================
+   .. phasefield/linux.md
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. Indices and tables
+.. ==================
+
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`
