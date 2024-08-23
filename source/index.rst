@@ -42,13 +42,12 @@ Research Notes
    :caption: Infrastructure
 
    infrastructure/linux.md
-   infrastructure/bscc.md
 
-.. .. toctree::
-..    :maxdepth: 1
-..    :caption: Phase Field Method
+.. toctree::
+   :maxdepth: 1
+   :caption: Phase Field
 
-   .. phasefield/linux.md
+   phasefield/pfc.ipynb
 
 .. Indices and tables
 .. ==================

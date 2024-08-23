@@ -38,12 +38,16 @@ Today, Linux systems are used throughout computing, from embedded systems to vir
 
 ## Infrastructure
 
-Linux is the dominant operating system for high performance computing (HPC), according to TOP500 list that keeps track of world’s most powerful computer systems, all TOP500 supercomputers run Linux. In microTi, we do HPC. We rent the supercomputers' resources from [Beijing Super Cloud Computing Centre, BSCC](https://cloud.blsc.cn/) and [Bohrium AI4S Station](https://bohrium.dp.tech), we maintain our own computer systems [hal9000]() and [550W]() (would be online in the summer time, 2024).
+Linux is the dominant operating system for high performance computing (HPC), according to TOP500 list that keeps track of world’s most powerful computer systems, all TOP500 supercomputers run Linux. In microTi, we do HPC. We rent the supercomputers' resources from [Beijing Super Cloud Computing Centre, BSCC](https://cloud.blsc.cn/) and [Bohrium AI4S Station](https://bohrium.dp.tech), we maintain our own computer systems [hal9000](./local.md) and [550W](./local.md) (would be online in the summer time, 2024).
 
 ### Environment Modules
 
 Typically users initialize their environment when they log in by setting environment information for every application they will reference during the session. The [Environment Modules](https://modules.sourceforge.net/) package is a tool that simplify shell initialization and lets users easily modify their environment during the session with modulefiles.
 
-### BSCC
+### [BSCC](./bscc.md)
 
 In BSCC, N26 section (with V100 SXM 32G card) is used. Software applications are compiled and installed in the `~/run/.local` directory.
+
+### [hal9000 and 550W](./local.md)
+
+In local PCs, gaming NVIDIA cards are used.
