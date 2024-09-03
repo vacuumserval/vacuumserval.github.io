@@ -48,6 +48,7 @@ Research Notes
    :caption: Phase Field
 
    phasefield/pfc.ipynb
+   phasefield/burgers.ipynb
 
 .. Indices and tables
 .. ==================
