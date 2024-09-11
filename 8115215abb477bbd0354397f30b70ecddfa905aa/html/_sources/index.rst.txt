@@ -49,6 +49,7 @@ Research Notes
 
    phasefield/pfc.ipynb
    phasefield/burgers.ipynb
+   phasefield/spinodalCUPY/spinodal.ipynb
 
 .. Indices and tables
 .. ==================
