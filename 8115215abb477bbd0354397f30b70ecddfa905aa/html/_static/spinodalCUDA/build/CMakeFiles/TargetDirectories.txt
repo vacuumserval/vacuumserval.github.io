@@ -1,0 +1,3 @@
+/home/yanglin/Nutstore Files/Nutstore/microTi/vacuumserval.github.io/source/phasefield/spinodalGPU/build/CMakeFiles/spinodal.dir
+/home/yanglin/Nutstore Files/Nutstore/microTi/vacuumserval.github.io/source/phasefield/spinodalGPU/build/CMakeFiles/edit_cache.dir
+/home/yanglin/Nutstore Files/Nutstore/microTi/vacuumserval.github.io/source/phasefield/spinodalGPU/build/CMakeFiles/rebuild_cache.dir

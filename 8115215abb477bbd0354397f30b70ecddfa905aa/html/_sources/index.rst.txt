@@ -45,11 +45,12 @@ Research Notes
 
 .. toctree::
    :maxdepth: 1
-   :caption: Phase Field
+   :caption: Phase Field Method
 
    phasefield/pfc.ipynb
    phasefield/burgers.ipynb
    phasefield/spinodalCUPY/spinodal.ipynb
+   phasefield/hexsq/hexsq.ipynb
 
 .. Indices and tables
 .. ==================
