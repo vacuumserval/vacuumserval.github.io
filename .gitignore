@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vtr
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -396,3 +397,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+source/phasefield/data/sn3d.1000.vtr
+source/phasefield/data/sn3d.750.vtr
