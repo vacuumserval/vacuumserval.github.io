@@ -47,10 +47,10 @@ Research Notes
    :maxdepth: 1
    :caption: Phase Field Method
 
-   phasefield/pfc.ipynb
+   phasefield/spinodal.ipynb
    phasefield/burgers.ipynb
-   phasefield/spinodalCUPY/spinodal.ipynb
-   phasefield/hexsq/hexsq.ipynb
+   phasefield/pfc.ipynb
+   phasefield/hexsq.ipynb
 
 .. Indices and tables
 .. ==================
