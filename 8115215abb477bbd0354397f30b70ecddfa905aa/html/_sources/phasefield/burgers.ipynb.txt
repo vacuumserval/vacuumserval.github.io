@@ -262,13 +262,6 @@
     "\n",
     "论文[1]中的弹性常数$C_{11}=97.7GPa$，$C_{12}=82.7GPa$，$C_{44}=7.5GPa$，相场方法使用时应除以$\\frac{\\Delta G_m}{V_{mol}}=\\frac{3.1375e02 J/mol}{1e-5 m^3/mol}$以无量纲化。"
    ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "张量运算$\\Omega_{ij}^{-1}=C_{iklj}n_kn_l$，$\\sigma_{ij}^p=C_{ijkl}\\varepsilon_{kl}(p)$，应理解成爱因斯坦求和。"
-   ]
   }
  ],
  "metadata": {
